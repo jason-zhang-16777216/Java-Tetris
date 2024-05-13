@@ -2,6 +2,8 @@ package tetris;
 import javax.swing.JPanel;
 
 public class TetrisGameBoard extends JPanel{
+	
+	//gameboard dimensions
 	public int[][] board = {  
 			{1,0,0,0,0,0,0,0,0,0},//20 index 0
 			{0,0,0,0,0,0,0,0,0,0},//19 index 1
@@ -27,6 +29,8 @@ public class TetrisGameBoard extends JPanel{
 	public TetrisGameBoard() {
 		//draw the game board here
 	}
+	
+	//clear line when a line is full
 	public void clearLine(int line) {
 		for (var i = 20-line; i > 0; i--) {
 			for (var j = 0; j < 10; j++) {

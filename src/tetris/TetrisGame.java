@@ -17,12 +17,38 @@ import java.awt.event.*;
 //main class
 public class TetrisGame extends JPanel implements ActionListener{
 	
+	
+	//gameboard dimensions
+	static public int[][] board = {  
+		{0,0,0,0,0,0,0,0,0,0},//20 index 0
+		{0,0,0,0,0,0,0,0,0,0},//19 index 1
+		{0,0,0,0,0,0,0,0,0,0},//18 index 2
+		{0,0,0,0,0,0,0,0,0,0},//17 index 3
+		{0,0,0,0,0,0,0,0,0,0},//16 index 4
+		{0,0,0,0,0,0,0,0,0,0},//15 index 5
+		{0,0,0,0,0,0,0,0,0,0},//14 index 6
+		{0,0,0,0,0,0,0,0,0,0},//13 index 7
+		{0,0,0,0,0,0,0,0,0,0},//12 index 8
+		{0,0,0,0,0,0,0,0,0,0},//11 index 9
+		{0,0,0,0,0,0,0,0,0,0},//10 index 10
+		{0,0,0,0,0,0,0,0,0,0},//9  index 11
+		{0,0,0,0,0,0,0,0,0,0},//8  index 12
+		{0,0,0,0,0,0,0,0,0,0},//7  index 13
+		{0,0,0,0,0,0,0,0,0,0},//6  index 14
+		{0,0,0,0,0,0,0,0,0,0},//5  index 15
+		{0,0,0,0,0,0,0,0,0,0},//4  index 16
+		{0,0,0,0,0,0,0,0,0,0},//3  index 17
+		{0,0,0,0,0,0,0,0,0,0},//2  index 18
+		{0,0,0,0,0,0,0,0,0,0} //1  index 19
+	};
+	
+	
 	int time;
 	Timer clock = new Timer();
 	
 	//pos, size of blocks
 	static int x = 140;
-	static int y = 100;
+	static int y = 90;
 	static int w = 30;
 	static int l = 30;
 
@@ -53,16 +79,24 @@ public class TetrisGame extends JPanel implements ActionListener{
 	public void paintComponent(Graphics g){
 		
 		Graphics2D g2d = (Graphics2D) g;
-		
+	
 		// draw space for game
 		g2d.setColor(Color.WHITE);
 	 	g2d.fillRect(20, 60, 300, 600); 
 		
 		// draw block
 	 	g2d.setColor(Color.BLACK);
-	 // make basic block
+	 	// make basic block
 		Rectangle block = new Rectangle(x, y, w, l); 
 	    g2d.fill(block);
+	    
+	    for (int i = 19; i >= 0; i--) {
+	    	for (int j = 9; j >= 0; j--) {
+	    		if (board[i][j] == 1) {
+	    			g2d.fillRect(20+30*j, 60+30*i, 30, 30);
+	    		}
+	    	}
+		}
 
 	}
 	
@@ -118,8 +152,19 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    			};
 	    			break;
 	    			
-	    		// rotation	
-	    		case KeyEvent.VK_E:
+	    		// drop	
+	    		case KeyEvent.VK_S:
+	    			int j = (x-20) / 30;
+	    			
+	    			for (int i = 19; i >= 0; i--) {
+	    				if (board[i][j] == 0) {
+	    					board[i][j] = 1;
+	    					i = -1;
+	    				}
+	    			}
+	    			
+	    			x = 140;
+	    			y = 90;
 	    			break;
 	        }
 	    	
@@ -134,14 +179,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 		@Override
 		public void keyReleased(KeyEvent e) {
 			//transform back when key released
-			
-			if (e.getKeyCode() == KeyEvent.VK_E) {
-				w = 30;
-				l = 30;
-				if (y == 285) {
-					y -= 15;
-				}
-			}
 			
 		}
 	}
