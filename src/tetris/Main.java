@@ -19,6 +19,7 @@ public class Main extends JFrame{
 				System.out.print(main.tetris.board[i][j]+" ");
 			}
 		System.out.println();
+		
 		}
 	}
 
