@@ -17,7 +17,6 @@ import java.awt.event.*;
 //main class
 public class TetrisGame extends JPanel implements ActionListener{
 	
-	
 	//gameboard dimensions
 	static public int[][] board = {  
 		{0,0,0,0,0,0,0,0,0,0},//20 index 0
@@ -42,7 +41,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		{0,0,0,0,0,0,0,0,0,0} //1  index 19
 	};
 	
-	
+	//time
 	int time;
 	Timer clock = new Timer();
 	
@@ -51,7 +50,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static int y = 90;
 	static int w = 30;
 	static int l = 30;
-
+	static int v = 30;
+	
+	//block being controlled by player
 	Rectangle block;
 	
 	//obstacle list
@@ -90,20 +91,53 @@ public class TetrisGame extends JPanel implements ActionListener{
 		Rectangle block = new Rectangle(x, y, w, l); 
 	    g2d.fill(block);
 	    
+	    
+	    // check if a coordinate needs to be filled
 	    for (int i = 19; i >= 0; i--) {
+	    	int n = 0;
 	    	for (int j = 9; j >= 0; j--) {
 	    		if (board[i][j] == 1) {
-	    			g2d.fillRect(20+30*j, 60+30*i, 30, 30);
+	    			g2d.fillRect(20+30*j, 60+30*i, w, l);
+	    			
+	    			n++; //check how many blocks in a row is filled
+	    			
+	    			//if whole row filled, clear line
+	    			if (n==10) {
+	    				for (j = 9; j >= 0; j--) {
+	    					board[i][j] = 0;
+	    				}
+	    				//move everything down
+	    				for (int ii = i; ii >= 0; ii--) {
+	    			    	for (int jj = 9; jj >= 0; jj--) {
+	    			    		if (board[ii][jj] == 1) {
+	    			    			board[ii][jj] = 0;
+	    			    			board[ii+1][jj] = 1;
+	    			    		}
+	    			    	}
+	    				}
+	    			}
 	    		}
 	    	}
 		}
+	    
+	    //check of block reached the bottom
+	    if (y == 630 || board[(y-60)/30 + 1][(x-20)/30] == 1) {
+			board[(y-60)/30][(x-20)/30] = 1;
+			x = 140;
+			y = 90;
+		}
+	    
 
 	}
 	
 	
 	public void actionPerformed(ActionEvent e) {
-		
 		time ++;
+		//bloci moves down slowly
+		if (time % 50 == 0) {
+			y += v;
+		}
+		//System.out.print(board[(y-60)/30 - 1][(x-20)/30]);
 		repaint();
 
 	}
@@ -162,7 +196,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					i = -1;
 	    				}
 	    			}
-	    			
 	    			x = 140;
 	    			y = 90;
 	    			break;
