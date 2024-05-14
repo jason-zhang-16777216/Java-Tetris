@@ -58,9 +58,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 	Rectangle block;
 	
 	//obstacle list
- 	ArrayList<Rectangle> ob = new ArrayList<Rectangle>(){{
- 		add(block);
- 	}};
+ 	//ArrayList<Rectangle> ob = new ArrayList<Rectangle>(){{
+ //		add(block);
+ 	//}};
 	
 	//keyHandling object to detect key presses
 	static KeyHandling kHandle = new KeyHandling();
@@ -81,17 +81,17 @@ public class TetrisGame extends JPanel implements ActionListener{
 	
 	public void paintComponent(Graphics g){
 		
-		Graphics2D g2d = (Graphics2D) g;
+		Graphics2D graphics = (Graphics2D) g;
 	
 		// draw space for game
-		g2d.setColor(Color.WHITE);
-	 	g2d.fillRect(20, 60, 300, 600); 
+		graphics.setColor(Color.WHITE);
+	 	graphics.fillRect(20, 60, 300, 600); 
 		
 		// draw block
-	 	g2d.setColor(Color.BLACK);
+	 	graphics.setColor(Color.BLACK);
 	 	// make basic block
 		Rectangle block = new Rectangle(x, y, w, l); 
-	    g2d.fill(block);
+	    graphics.fill(block);
 	    
 	    
 	    // check if a coordinate needs to be filled
@@ -99,33 +99,17 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    	int n = 0;
 	    	for (int j = 9; j >= 0; j--) {
 	    		if (board[i][j] == 1) {
-	    			g2d.fillRect(20+30*j, 60+30*i, w, l);
-	    			
-	    			n++; //num of blocks in a row filled
+	    			graphics.fillRect(20+30*j, 60+30*i, w, l);
 	    			
 	    			//if whole row filled,
-	    			if (n==10) {
-	    				//clear line
-	    				for (j = 9; j >= 0; j--) {
-	    					board[i][j] = 0;
-	    					score ++;
-	    				}
-	    				
-	    				//move everything down
-	    				for (int ii = i; ii >= 0; ii--) {
-	    			    	for (int jj = 9; jj >= 0; jj--) {
-	    			    		if (board[ii][jj] == 1) {
-	    			    			board[ii][jj] = 0;
-	    			    			board[ii+1][jj] = 1;
-	    			    		}
-	    			    	}
-	    				}
+	    			if (checkLine(i)) {
+	    				clearLine(i);
 	    			}
 	    		}
 	    	}
 		}
 	    
-	    //check of block reached the bottom
+	    //check if block reached the bottom
 	    if (y == 630 || board[(y-60)/30 + 1][(x-20)/30] == 1) {
 			board[(y-60)/30][(x-20)/30] = 1;
 			x = 140;
@@ -134,7 +118,25 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    
 
 	}
-	
+	public boolean checkLine(int index) {
+		for (var i = 0; i < 10; i++) {
+			if (board[index][i] == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	public void clearLine(int index) { // Handles line clearing
+		for (var i = index; i > 0; i--) { // Moves each line above down 1 line
+			for (var j = 0; j < 10; j++) {
+				board[i][j] = board[i-1][j];
+			}
+		}
+		
+		for (var i = 0;i<10;i++) { // Clears the top line
+			board[0][i] = 0;
+		}
+	}
 	
 	public void actionPerformed(ActionEvent e) {
 		time ++;
