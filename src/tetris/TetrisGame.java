@@ -46,8 +46,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	Timer clock = new Timer();
 	
 	//pos, size of blocks
-	static int x = 140;
-	static int y = 90;
+	static int x = 110;
+	static int y = 60;
 	static int w = 30;
 	static int l = 30;
 	static int v = 30;
@@ -99,13 +99,15 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		if (board[i][j] == 1) {
 	    			g2d.fillRect(20+30*j, 60+30*i, w, l);
 	    			
-	    			n++; //check how many blocks in a row is filled
+	    			n++; //num of blocks in a row filled
 	    			
-	    			//if whole row filled, clear line
+	    			//if whole row filled,
 	    			if (n==10) {
+	    				//clear line
 	    				for (j = 9; j >= 0; j--) {
 	    					board[i][j] = 0;
 	    				}
+	    				
 	    				//move everything down
 	    				for (int ii = i; ii >= 0; ii--) {
 	    			    	for (int jj = 9; jj >= 0; jj--) {
@@ -124,7 +126,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    if (y == 630 || board[(y-60)/30 + 1][(x-20)/30] == 1) {
 			board[(y-60)/30][(x-20)/30] = 1;
 			x = 140;
-			y = 90;
+			y = 60;
 		}
 	    
 
@@ -137,7 +139,13 @@ public class TetrisGame extends JPanel implements ActionListener{
 		if (time % 50 == 0) {
 			y += v;
 		}
-		//System.out.print(board[(y-60)/30 - 1][(x-20)/30]);
+		
+		//check if block reached top, if yes exit game
+		for (int i = 9; i >= 0; i--) {
+			if (board[0][i] == 1) {
+				System.exit(0);
+			}
+		}
 		repaint();
 
 	}
@@ -197,7 +205,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    				}
 	    			}
 	    			x = 140;
-	    			y = 90;
+	    			y = 60;
 	    			break;
 	        }
 	    	
@@ -233,7 +241,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		game.setBackground(bg); 
 		
 		//window settings
-		window.setBounds(300, 200, 600, 700); //size
+		window.setBounds(350, 150, 650, 750); //size
 		window.setResizable(false); //no resize
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //close
 		window.setVisible(true); //visibility
