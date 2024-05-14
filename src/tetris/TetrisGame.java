@@ -52,6 +52,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static int l = 30;
 	static int v = 30;
 	
+	static int score = 0;
+	
 	//block being controlled by player
 	Rectangle block;
 	
@@ -106,6 +108,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    				//clear line
 	    				for (j = 9; j >= 0; j--) {
 	    					board[i][j] = 0;
+	    					score ++;
 	    				}
 	    				
 	    				//move everything down
@@ -143,6 +146,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		//check if block reached top, if yes exit game
 		for (int i = 9; i >= 0; i--) {
 			if (board[0][i] == 1) {
+				System.out.print(score);
 				System.exit(0);
 			}
 		}
