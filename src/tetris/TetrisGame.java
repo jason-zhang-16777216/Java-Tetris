@@ -46,6 +46,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	int t;
 	
 	//pos, size, velocity of blocks
+
 	static int x = 140;
 	static int y = 30;
 	static int w = 30;
@@ -87,7 +88,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 		// draw space for game
 		graphics.setColor(Color.WHITE);
 	 	graphics.fillRect(20, 60, 300, 600); 
-		
+	 	graphics.setColor(Color.GRAY);
+	 	graphics.fillRect(20, 30, 300, 30);
 		// draw block
 	 	graphics.setColor(Color.BLACK);
 		Rectangle block = new Rectangle(x, y, w, l); 
@@ -159,11 +161,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 		
 		//Game-end condition.
 		for (int i = 0; i <= 9; i++) {
-			// if block stacks outside of grid, game ends
-			if (board[0][i] == 1) {				
+			if (board[0][i] == 1) { //Ends game if a piece is placed above the board.
 				System.out.println(score);
 				System.out.print("LOSE!!!");
-				System.exit(0); //end game
+				System.exit(0); 
 			}
 		}
 		repaint();
