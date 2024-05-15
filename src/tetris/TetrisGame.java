@@ -179,6 +179,20 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    			}
 	    			break;
 	    			
+	    			// drop	
+	    		case KeyEvent.VK_DOWN:
+	    			int j = (x-20) / 30;
+	    			
+	    			for (int i = 19; i >= 0; i--) {
+	    				if (board[i][j] == 0) {
+	    					board[i][j] = 1;
+	    					i = -1;
+	    				}
+	    			}
+	    			x = 140;
+	    			y = 60;
+	    			break;
+	    			
 	    		case KeyEvent.VK_A:
 	    			if (x == 20) {
 	    				x -=0;
@@ -199,11 +213,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    			
 	    		// drop	
 	    		case KeyEvent.VK_S:
-	    			int j = (x-20) / 30;
+	    			int k = (x-20) / 30;
 	    			
 	    			for (int i = 19; i >= 0; i--) {
-	    				if (board[i][j] == 0) {
-	    					board[i][j] = 1;
+	    				if (board[i][k] == 0) {
+	    					board[i][k] = 1;
 	    					i = -1;
 	    				}
 	    			}
@@ -230,7 +244,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 
 	//main function
 	public static void main(String[] args) {
-		
 		//set title
 		JFrame window = new JFrame("Tetris");
 		
