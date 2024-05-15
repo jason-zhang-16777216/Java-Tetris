@@ -42,12 +42,13 @@ public class TetrisGame extends JPanel implements ActionListener{
 	};
 	
 	//time
-	int time;
+	static int time;
 	Timer clock = new Timer();
+	int t;
 	
 	//pos, size of blocks
-	static int x = 110;
-	static int y = 60;
+	static int x = 140;
+	static int y = 30;
 	static int w = 30;
 	static int l = 30;
 	static int v = 30;
@@ -70,6 +71,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	//constructor
 	public TetrisGame(){
 		time = 0;
+		t = 1;
 		clock.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				actionPerformed(null);
@@ -109,16 +111,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    	}
 		}
 	    
-	    //check if block reached the bottom
-	    if (y == 630 || board[(y-60)/30 + 1][(x-20)/30] == 1) {
-			board[(y-60)/30][(x-20)/30] = 1;
-			x = 140;
-			y = 60;
-		}
-	    
 
 	}
-	public boolean checkLine(int index) {
+	public boolean checkLine(int index) { // Checks for filled lines
 		for (var i = 0; i < 10; i++) {
 			if (board[index][i] == 0) {
 				return false;
@@ -127,7 +122,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		return true;
 	}
 	public void clearLine(int index) { // Handles line clearing
-		for (var i = index; i > 0; i--) { // Moves each line above down 1 line
+		for (var i = index; i > 0; i--) { // Moves each line above down by 1
 			for (var j = 0; j < 10; j++) {
 				board[i][j] = board[i-1][j];
 			}
@@ -135,21 +130,33 @@ public class TetrisGame extends JPanel implements ActionListener{
 		
 		for (var i = 0;i<10;i++) { // Clears the top line
 			board[0][i] = 0;
+			score++;
 		}
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		time ++;
+		
 		//block moves down slowly
 		if (time % 50 == 0) {
 			y += v;
 		}
 		
-		//check if block reached top, if yes exit game
-		for (int i = 9; i >= 0; i--) {
-			if (board[0][i] == 1) {
-				System.out.print(score);
-				System.exit(0);
+	    //check if block reached the bottom
+	    if (y == 630 || board[(y-60)/l + 1][(x-20)/l] == 1) {
+	    	t++;
+			if (t % 50 == 0) {
+				if (y == 30 && board[0][(x-20)/l] == 1) {
+					System.out.print(score);
+					System.exit(0);
+				}
+				else {
+					board[(y-60)/30][(x-20)/30] = 1;
+					x = 140;
+					y = 30;
+					t = 1;
+					time = 0;
+				}
 			}
 		}
 		repaint();
@@ -182,7 +189,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    			}
 	    			break;
 	    			
-	    			// drop	
+	    		// drop	
 	    		case KeyEvent.VK_DOWN:
 	    			int j = (x-20) / 30;
 	    			
@@ -193,7 +200,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    				}
 	    			}
 	    			x = 140;
-	    			y = 60;
+	    			y = 30;
 	    			break;
 	    			
 	    		case KeyEvent.VK_A:
@@ -225,7 +232,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    				}
 	    			}
 	    			x = 140;
-	    			y = 60;
+	    			y = 30;
+	    			time = 0;
 	    			break;
 	        }
 	    	
