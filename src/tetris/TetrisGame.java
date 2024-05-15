@@ -1,5 +1,4 @@
 package tetris;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,29 +15,28 @@ import java.awt.event.*;
 
 //main class
 public class TetrisGame extends JPanel implements ActionListener{
-	
-	//gameboard dimensions
-	static public int[][] board = {  
-		{0,0,0,0,0,0,0,0,0,0},//20 index 0
-		{0,0,0,0,0,0,0,0,0,0},//19 index 1
-		{0,0,0,0,0,0,0,0,0,0},//18 index 2
-		{0,0,0,0,0,0,0,0,0,0},//17 index 3
-		{0,0,0,0,0,0,0,0,0,0},//16 index 4
-		{0,0,0,0,0,0,0,0,0,0},//15 index 5
-		{0,0,0,0,0,0,0,0,0,0},//14 index 6
-		{0,0,0,0,0,0,0,0,0,0},//13 index 7
-		{0,0,0,0,0,0,0,0,0,0},//12 index 8
-		{0,0,0,0,0,0,0,0,0,0},//11 index 9
-		{0,0,0,0,0,0,0,0,0,0},//10 index 10
-		{0,0,0,0,0,0,0,0,0,0},//9  index 11
-		{0,0,0,0,0,0,0,0,0,0},//8  index 12
-		{0,0,0,0,0,0,0,0,0,0},//7  index 13
-		{0,0,0,0,0,0,0,0,0,0},//6  index 14
-		{0,0,0,0,0,0,0,0,0,0},//5  index 15
-		{0,0,0,0,0,0,0,0,0,0},//4  index 16
-		{0,0,0,0,0,0,0,0,0,0},//3  index 17
-		{0,0,0,0,0,0,0,0,0,0},//2  index 18
-		{0,0,0,0,0,0,0,0,0,0} //1  index 19
+	static public int[][] board = {  //Initializes the board's starting state.
+		{0,0,0,0,0,0,0,0,0,0},//21 index 0
+		{0,0,0,0,0,0,0,0,0,0},//20 index 1
+		{0,0,0,0,0,0,0,0,0,0},//19 index 2
+		{0,0,0,0,0,0,0,0,0,0},//18 index 3
+		{0,0,0,0,0,0,0,0,0,0},//17 index 4
+		{0,0,0,0,0,0,0,0,0,0},//16 index 5
+		{0,0,0,0,0,0,0,0,0,0},//15 index 6
+		{0,0,0,0,0,0,0,0,0,0},//14 index 7
+		{0,0,0,0,0,0,0,0,0,0},//13 index 8
+		{0,0,0,0,0,0,0,0,0,0},//12 index 9
+		{0,0,0,0,0,0,0,0,0,0},//11 index 10
+		{0,0,0,0,0,0,0,0,0,0},//10 index 11
+		{0,0,0,0,0,0,0,0,0,0},//9  index 12
+		{0,0,0,0,0,0,0,0,0,0},//8  index 13
+		{0,0,0,0,0,0,0,0,0,0},//7  index 14
+		{0,0,0,0,0,0,0,0,0,0},//6  index 15
+		{0,0,0,0,0,0,0,0,0,0},//5  index 16
+		{0,0,0,0,0,0,0,0,0,0},//4  index 17
+		{0,0,0,0,0,0,0,0,0,0},//3  index 18
+		{0,0,0,0,0,0,0,0,0,0},//2  index 19
+		{0,0,0,0,0,0,0,0,0,0} //1  index 20 
 	};
 	
 	//time
@@ -81,30 +79,27 @@ public class TetrisGame extends JPanel implements ActionListener{
 	
 	public void paintComponent(Graphics g){
 		
-		Graphics2D graphics = (Graphics2D) g;
+		Graphics2D gameGraphics = (Graphics2D) g;
 	
 		// draw space for game
-		graphics.setColor(Color.WHITE);
-	 	graphics.fillRect(20, 60, 300, 600); 
+		gameGraphics.setColor(Color.WHITE);
+	 	gameGraphics.fillRect(20, 60, 300, 600); 
 		
 		// draw block
-	 	graphics.setColor(Color.BLACK);
-	 	// make basic block
+	 	gameGraphics.setColor(Color.BLACK);
 		Rectangle block = new Rectangle(x, y, w, l); 
-	    graphics.fill(block);
+	    gameGraphics.fill(block);
 	    
 	    
-	    // check if a coordinate needs to be filled
-	    for (int i = 19; i >= 0; i--) {
-	    	int n = 0;
-	    	for (int j = 9; j >= 0; j--) {
+	    //update game state
+	    for (int i = 19; i >= 0; i--) { //Iterates over rows.
+	    	for (int j = 9; j >= 0; j--) { // Iterates over columns
 	    		if (board[i][j] == 1) {
-	    			graphics.fillRect(20+30*j, 60+30*i, w, l);
+	    			gameGraphics.fillRect(20+30*j, 60+30*i, w, l); //fills the block at (i,j)
 	    			
-	    			//if whole row filled,
-	    			if (checkLine(i)) {
-	    				clearLine(i);
-	    			}
+	    		}
+	    		if(checkLine(i)) {
+	    			clearLine(i);
 	    		}
 	    	}
 		}
@@ -140,16 +135,18 @@ public class TetrisGame extends JPanel implements ActionListener{
 	
 	public void actionPerformed(ActionEvent e) {
 		time ++;
-		//block moves down slowly
-		if (time % 50 == 0) {
+		//Block moving delay.
+		if (time % 100 == 0) {
 			y += v;
 		}
 		
-		//check if block reached top, if yes exit game
+		//Game-end condition.
 		for (int i = 9; i >= 0; i--) {
-			if (board[0][i] == 1) {
-				System.out.print(score);
-				System.exit(0);
+			if (board[0][i] != 0) {
+				while (true) {
+					System.out.print(score);
+					System.out.println("LOSE!!!");
+				}
 			}
 		}
 		repaint();
