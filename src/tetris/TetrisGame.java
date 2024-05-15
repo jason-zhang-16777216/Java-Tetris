@@ -45,7 +45,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	Timer clock = new Timer();
 	int t;
 	
-	//pos, size of blocks
+	//pos, size, velocity of blocks
 	static int x = 140;
 	static int y = 30;
 	static int w = 30;
@@ -98,7 +98,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    for (int i = 20; i >= 1; i--) { //Iterates over rows.
 	    	for (int j = 9; j >= 0; j--) { // Iterates over columns
 	    		if (board[i][j] == 1) {
-	    			graphics.fillRect(20+30*j, 30+30*i, w, l); //fills the block at (i,j)
+	    			graphics.fillRect(20+30*j, 30+30*i, w, l); //locks the block at (i,j)
+	    			
+	    		}
+	    		else if (board[i][j] == 2) {
+	    			graphics.fillRect(20+30*j, 30+30*i, w, l); //fills the block at (i,j) (not locked)
 	    			
 	    		}
 	    		if(checkLine(i)) {
@@ -135,16 +139,16 @@ public class TetrisGame extends JPanel implements ActionListener{
 		time ++;
 		
 		//block moves down slowly
-		if (time % 100 == 0) {
+		if (time % 50 == 0) {
 			y += v;
 		}
 		
 	    //check if block reached the bottom
 	    if (y == 630 || board[(y-30)/l + 1][(x-20)/l] == 1) {
 	    	
-	    	t++; //make block remain on top of stacked block for enough time before stacking
-	    	
-	    	if (t % 100 == 0) {
+	    	//make block remain on top of stacked block for enough time before stacking
+	    	t++; 
+	    	if (t % 50 == 0) {
 	    		board[(y-30)/30][(x-20)/30] = 1;
 				x = 140;
 				y = 30;
@@ -191,19 +195,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    			}
 	    			break;
 	    			
-	    		// drop	
-	    		case KeyEvent.VK_DOWN:
-	    			int j = (x-20) / 30;
-	    			
-	    			for (int i = 20; i >= 1; i--) {
-	    				if (board[i][j] == 0) {
-	    					board[i][j] = 1;
-	    					i = -1;
-	    				}
-	    			}
-	    			x = 140;
-	    			y = 30;
-	    			break;
+	    		
 	    			
 	    		case KeyEvent.VK_A:
 	    			if (x == 20) {
@@ -222,21 +214,52 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    				x += 30;
 	    			};
 	    			break;
-	    			
+	    		
 	    		// drop	
 	    		case KeyEvent.VK_S:
 	    			int k = (x-20) / 30;
 	    			
-	    			for (int i = 20; i >= 1; i--) {
-	    				if (board[i][k] == 0) {
-	    					board[i][k] = 1;
-	    					i = -1;
+	    			for (int i = 0; i <= 20; i++) {
+	    				if (board[i][k] == 1) {
+	    					board[i-1][k] = 1;
+	    					x = 140;
+	    	    			y = 30;
+	    	    			time = 0;
+	    	    			break;
+	    				}
+	    				else if (i == 20 && board[i][k] == 0) {
+	    					board[20][k] = 1;
+	    					x = 140;
+	    	    			y = 30;
+	    	    			time = 0;
+	    	    			break;
 	    				}
 	    			}
-	    			x = 140;
-	    			y = 30;
-	    			time = 0;
 	    			break;
+	    			
+	    		// drop	
+	    		case KeyEvent.VK_DOWN:
+	    			int j = (x-20) / 30;
+	    			
+	    			for (int i = 0; i <= 20; i++) {
+	    				if (board[i][j] == 1) {
+	    					board[i-1][j] = 1;
+	    					x = 140;
+	    	    			y = 30;
+	    	    			time = 0;
+	    	    			break;
+	    				}
+	    				else if (i == 20 && board[i][j] == 0) {
+	    					board[20][j] = 1;
+	    					x = 140;
+	    	    			y = 30;
+	    	    			time = 0;
+	    	    			break;
+	    				}
+	    			}
+	    			break;
+	    			
+	    		
 	        }
 	    	
 	    }
