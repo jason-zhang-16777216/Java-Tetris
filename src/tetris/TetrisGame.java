@@ -41,15 +41,14 @@ public class TetrisGame extends JPanel implements ActionListener{
 		{0,0,0,0,0,0,0,0,0,0} //1  index 20 
 	};
 	
+	public char[] blockTypes = {'I', 'A'};
+	
 	//time
 	static int time;
 	Timer clock = new Timer();
 	static int t;
 	
 	//pos, size, velocity of blocks
-
-	//static int x = 140;
-	//static int y = 30;
 	static int w = 30;
 	static int l = 30;
 	static int v = 30;
@@ -69,9 +68,37 @@ public class TetrisGame extends JPanel implements ActionListener{
 	
 	static Random r = new Random();
 	
+	public void getBlock() {
+		char type = blockTypes[r.nextInt(2)];
+		
+		switch(type) {
+			case('I'):
+				board[0][3] = 2;
+				board[0][4] = 2;
+				board[0][5] = 2;
+				board[0][6] = 2;
+			
+			case('O'):
+				
+			case('T'):
+				
+			case('S'):
+			
+			case('Z'):
+				
+			case('L'):
+				
+			case('J'):
+				
+			case('A'):
+				board[0][5] = 2;
+		}
+		
+	}
+	
 	//constructor
 	public TetrisGame(){
-		board[0][5] = 2;
+		getBlock();
 		time = 1;
 		t = 1;
 		clock.scheduleAtFixedRate(new TimerTask() {
@@ -81,7 +108,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 		}, 0, 10);
 		
 	}
-
 	
 	public void paintComponent(Graphics g){
 		
@@ -108,7 +134,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		}
 	    		if(checkLine(i)) {
 	    			clearLine(i);
-	    			board[0][5] = 2;
+	    			getBlock();;
 	    		}
 	    	}
 		}
