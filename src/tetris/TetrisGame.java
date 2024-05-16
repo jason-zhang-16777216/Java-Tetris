@@ -41,8 +41,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 		{0,0,0,0,0,0,0,0,0,0} //1  index 20 
 	};
 	
-	public char[] blockTypes = {'I', 'A'};
-	
 	//time
 	static int time;
 	Timer clock = new Timer();
@@ -55,21 +53,21 @@ public class TetrisGame extends JPanel implements ActionListener{
 	
 	static int score = 0;
 	
+	public int k;
+	
 	//block being controlled by player
 	Rectangle block;
-	
-	//obstacle list
- 	//ArrayList<Rectangle> ob = new ArrayList<Rectangle>(){{
- //		add(block);
- 	//}};
 	
 	//keyHandling object to detect key presses
 	static KeyHandling kHandle = new KeyHandling();
 	
 	static Random r = new Random();
 	
-	public void getBlock() {
-		char type = blockTypes[r.nextInt(2)];
+	public static void getBlock() {
+		char[] blockTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L','J'};
+		char type = blockTypes[r.nextInt(blockTypes.length)];
+		
+		System.out.println(type);
 		
 		switch(type) {
 			case('I'):
@@ -77,18 +75,49 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[0][4] = 2;
 				board[0][5] = 2;
 				board[0][6] = 2;
+				break;
 			
 			case('O'):
+				board[1][4] = 2;
+				board[0][4] = 2;
+				board[0][5] = 2;
+				board[1][5] = 2;
+				break;
 				
 			case('T'):
+				board[0][5] = 2;
+				board[1][4] = 2;
+				board[1][5] = 2;
+				board[1][6] = 2;
+				break;
 				
 			case('S'):
+				board[0][5] = 2;
+				board[0][4] = 2;
+				board[1][4] = 2;
+				board[1][3] = 2;
+				break;
 			
 			case('Z'):
+				board[1][5] = 2;
+				board[1][4] = 2;
+				board[0][4] = 2;
+				board[0][3] = 2;
+				break;
 				
 			case('L'):
+				board[0][5] = 2;
+				board[1][3] = 2;
+				board[1][4] = 2;
+				board[1][5] = 2;
+				break;
 				
 			case('J'):
+				board[0][3] = 2;
+				board[1][3] = 2;
+				board[1][4] = 2;
+				board[1][5] = 2;
+				break;
 				
 			case('A'):
 				board[0][5] = 2;
@@ -98,7 +127,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 	
 	//constructor
 	public TetrisGame(){
-		getBlock();
 		time = 1;
 		t = 1;
 		clock.scheduleAtFixedRate(new TimerTask() {
@@ -119,7 +147,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	 	graphics.setColor(Color.GRAY);
 	 	graphics.fillRect(20, 30, 300, 30);
 	 	graphics.setColor(Color.BLACK);
-	    
+	 	
 	    
 	    //update game state
 	    for (int i = 0; i <= 20; i++) { //Iterates over rows.
@@ -190,7 +218,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			    	    	}
 			    	    }
 			    	    endGame();
-			    	    board[0][5] = 2; //draw new block
+			    	    getBlock(); //draw new block
 			    	    time = 1;
 			    	    t = 1;
 			    	}
@@ -208,7 +236,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			    	    	}
 			    	    }
 			    		endGame();
-			    	    board[0][5] = 2; //draw new block
+			    	    getBlock(); //draw new block
 			    	    time = 1;
 			    	    t = 1;
 			    	    		
@@ -222,7 +250,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	public static boolean checkComplexShape(int j, int i) { //check if shape is complex
 		//check if current block is surrounded by any unlocked block
 		if (((j <= 0 || i <= 0)|| board[i-1][j-1] != 2) && (i <= 0 || board[i-1][j] != 2) && ((j >= 9 || i <= 0)|| board[i-1][j+1] != 2) &&
-    		(j <= 0 || board[i][j-1]!= 2)                                &&                             (j >= 9|| board[i][j+1] != 2) &&
+    		(j <= 0 || board[i][j-1]!= 2)                                  &&                              (j >= 9|| board[i][j+1] != 2) &&
     		((j <= 0 || i >= 20)|| board[i+1][j-1] != 2) && (i >= 20|| board[i+1][j] != 2) && ((j >= 9 || i >= 20)|| board[i+1][j+1] != 2)) {
 			return true; 
 		}
@@ -264,15 +292,16 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    	switch(e.getKeyCode()) {
 	    			
 	    		case KeyEvent.VK_LEFT:
-	    			int testL = 0; //check to see if shape is touching boundary
+	    			int testL = 0;
 	    			for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
 	    				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
 	    					
 	    					if (board[i][j] == 2) { // check if it's moving shape
 	    						
 	    						// for 1 by 1
-	    						if (checkComplexShape(j, i)) {  
-	    							if (j != 0  && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
+	    						if (checkComplexShape(j, i)) {
+	    							testL = 1;
+	    							if (j != 0 && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
 	    								board[i][j] = 0;
 	    								board[i][j-1] = 2;
 	    							}
@@ -280,8 +309,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    						
 	    						// for complex shapes
 	    	    				else {
-	    	    					if (j != 0 && board[i][j-1] != 1) { // check if shape is touching 
-	    	    						testL ++;
+	    	    					if (j != 0 && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
+	    	    						testL += 0;
 	    	    					}
 	    	    					else {
 	    	    						testL--;
@@ -290,10 +319,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					}
 	    				}
 	    			}
-	    			if (testL < 0) {
+	    			if (testL == 0) {
 	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
 		    				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
-		    					if (board[i][j] == 2 && j!=0) {
+		    					if (board[i][j] == 2) {
 		    						board[i][j] = 0;
     								board[i][j-1] = 2;
 		    					}
@@ -310,8 +339,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					if (board[i][j] == 2) { // check if it's moving shape
 	    						
 	    						// for 1 by 1
-	    						if (checkComplexShape(j, i)) { 
-	    							if (j != 9  && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
+	    						if (checkComplexShape(j, i)) {
+	    							testR = 1;
+	    							if (j != 9 && board[i][j+1] != 1) { // check if shape is touching leftmost boundary
 	    								board[i][j] = 0;
 	    								board[i][j+1] = 2;
 	    							}
@@ -319,8 +349,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    						
 	    						// for complex shapes
 	    	    				else {
-	    	    					if (j != 9 && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
-	    	    						testR ++;
+	    	    					if (j != 9 && board[i][j+1] != 1) { // check if shape is touching leftmost boundary
+	    	    						testR += 0;
 	    	    					}
 	    	    					else {
 	    	    						testR--;
@@ -329,10 +359,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					}
 	    				}
 	    			}
-	    			if (testR < 0) {
+	    			if (testR == 0) {
 	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
 		    				for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
-		    					if (board[i][j] == 2 && j!=0) {
+		    					if (board[i][j] == 2) {
 		    						board[i][j] = 0;
     								board[i][j+1] = 2;
 		    					}
@@ -352,6 +382,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    						
 	    						// for 1 by 1
 	    						if (checkComplexShape(j, i)) {
+	    							testLl = 1;
 	    							if (j != 0 && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
 	    								board[i][j] = 0;
 	    								board[i][j-1] = 2;
@@ -361,7 +392,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    						// for complex shapes
 	    	    				else {
 	    	    					if (j != 0 && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
-	    	    						testLl ++;
+	    	    						testLl += 0;
 	    	    					}
 	    	    					else {
 	    	    						testLl--;
@@ -370,10 +401,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					}
 	    				}
 	    			}
-	    			if (testLl < 0) {
+	    			if (testLl == 0) {
 	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
 		    				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
-		    					if (board[i][j] == 2 && j!=0) {
+		    					if (board[i][j] == 2) {
 		    						board[i][j] = 0;
     								board[i][j-1] = 2;
 		    					}
@@ -390,8 +421,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					if (board[i][j] == 2) { // check if it's moving shape
 	    						
 	    						// for 1 by 1
-	    						if (checkComplexShape(j, i)) { 
-	    							if (j != 9  && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
+	    						if (checkComplexShape(j, i)) {
+	    							testRr = 1;
+	    							if (j != 9 && board[i][j+1] != 1) { // check if shape is touching leftmost boundary
 	    								board[i][j] = 0;
 	    								board[i][j+1] = 2;
 	    							}
@@ -399,8 +431,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    						
 	    						// for complex shapes
 	    	    				else {
-	    	    					if (j != 9 && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
-	    	    						testRr ++;
+	    	    					if (j != 9 && board[i][j+1] != 1) { // check if shape is touching leftmost boundary
+	    	    						testRr += 0;
 	    	    					}
 	    	    					else {
 	    	    						testRr--;
@@ -409,10 +441,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					}
 	    				}
 	    			}
-	    			if (testRr < 0) {
+	    			if (testRr == 0) {
 	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
 		    				for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
-		    					if (board[i][j] == 2 && j!=0) {
+		    					if (board[i][j] == 2) {
 		    						board[i][j] = 0;
     								board[i][j+1] = 2;
 		    					}
@@ -436,6 +468,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    						int[] newArray = Arrays.copyOf(all_d, all_d.length + 1);
 	    						newArray[newArray.length - 1] = d;
 	    				        all_d = newArray;
+	    				        d = 0;
 	    					}
 
 	    				}
@@ -476,6 +509,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    						int[] newArray = Arrays.copyOf(all_di, all_di.length + 1);
 	    						newArray[newArray.length - 1] = di;
 	    				        all_di = newArray;
+	    				        di = 0;
 	    					}
 
 	    				}
@@ -525,6 +559,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		
 		// set new GamePlay object to refer to
 		TetrisGame game = new TetrisGame();
+		game.getBlock();
 		Container c = window.getContentPane();
 		c.add(game);
 		
