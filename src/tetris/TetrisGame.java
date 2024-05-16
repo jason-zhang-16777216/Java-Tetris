@@ -115,6 +115,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    
 
 	}
+	
 	public boolean checkLine(int index) { // Checks for filled lines
 		for (var i = 0; i < 10; i++) {
 			if (board[index][i] == 0) {
@@ -192,6 +193,15 @@ public class TetrisGame extends JPanel implements ActionListener{
 		}
 		
 	}
+	public static boolean checkComplexShape(int j, int i) { //check if shape is complex
+		//check if current block is surrounded by any unlocked block
+		if (((j <= 0 || i <= 0)|| board[i-1][j-1] != 2) && (i <= 0 || board[i-1][j] != 2) && ((j >= 9 || i <= 0)|| board[i-1][j+1] != 2) &&
+    		(j <= 0 || board[i][j-1]!= 2)                                &&                             (j >= 9|| board[i][j+1] != 2) &&
+    		((j <= 0 || i >= 20)|| board[i+1][j-1] != 2) && (i >= 20|| board[i+1][j] != 2) && ((j >= 9 || i >= 20)|| board[i+1][j+1] != 2)) {
+			return true; 
+		}
+		return false;
+	}
 	
 	public void actionPerformed(ActionEvent e) {
 		
@@ -204,11 +214,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    	for (int j = 9; j >= 0; j--) { // Iterates over columns (right to left)
 		    		if (board[i][j] == 2) {
 		    			board[i][j] = 0;
-		    			//System.out.println(i);
 		    			try {
 		    				board[i+1][j] = 2;
 		    			}
-		    			catch (ArrayIndexOutOfBoundsException ex) {
+		    			catch (ArrayIndexOutOfBoundsException ex) { //if block is at bottom (index out of range)
 		    				checkReachBottom();
 		    			}
 		    		}
@@ -229,23 +238,23 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    	switch(e.getKeyCode()) {
 	    			
 	    		case KeyEvent.VK_LEFT:
-	    			int testL = 0;
+	    			int testL = 0; //check to see if shape is touching boundary
 	    			for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
 	    				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
 	    					
 	    					if (board[i][j] == 2) { // check if it's moving shape
 	    						
-	    						if (((j <= 0 || i <= 0)|| board[i-1][j-1] != 2) && (i <= 0 || board[i-1][j] != 2) && ((j >= 9 || i <= 0)|| board[i-1][j+1] != 2) &&
-	    			    			(j <= 0 || board[i][j-1]!= 2)                                &&                             (j >= 9|| board[i][j+1] != 2) &&
-	    			    			((j <= 0 || i >= 20)|| board[i+1][j-1] != 2) && (i >= 20|| board[i+1][j] != 2) && ((j >= 9 || i >= 20)|| board[i+1][j+1] != 2)) { //check for complex shape, if not: 
+	    						// for 1 by 1
+	    						if (checkComplexShape(j, i)) {  
 	    							if (j != 0  && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
 	    								board[i][j] = 0;
 	    								board[i][j-1] = 2;
 	    							}
 	    			    		}
+	    						
 	    						// for complex shapes
 	    	    				else {
-	    	    					if (j != 0 && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
+	    	    					if (j != 0 && board[i][j-1] != 1) { // check if shape is touching 
 	    	    						testL ++;
 	    	    					}
 	    	    					else {
@@ -274,14 +283,14 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					
 	    					if (board[i][j] == 2) { // check if it's moving shape
 	    						
-	    						if (((j <= 0 || i <= 0)|| board[i-1][j-1] != 2) && (i <= 0 || board[i-1][j] != 2) && ((j >= 9 || i <= 0)|| board[i-1][j+1] != 2) &&
-	    			    			(j <= 0 || board[i][j-1]!= 2)                                &&                             (j >= 9|| board[i][j+1] != 2) &&
-	    			    			((j <= 0 || i >= 20)|| board[i+1][j-1] != 2) && (i >= 20|| board[i+1][j] != 2) && ((j >= 9 || i >= 20)|| board[i+1][j+1] != 2)) { //check for complex shape, if not: 
+	    						// for 1 by 1
+	    						if (checkComplexShape(j, i)) { 
 	    							if (j != 9  && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
 	    								board[i][j] = 0;
 	    								board[i][j+1] = 2;
 	    							}
 	    			    		}
+	    						
 	    						// for complex shapes
 	    	    				else {
 	    	    					if (j != 9 && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
@@ -315,14 +324,14 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					
 	    					if (board[i][j] == 2) { // check if it's moving shape
 	    						
-	    						if (((j <= 0 || i <= 0)|| board[i-1][j-1] != 2) && (i <= 0 || board[i-1][j] != 2) && ((j >= 9 || i <= 0)|| board[i-1][j+1] != 2) &&
-	    			    			(j <= 0 || board[i][j-1]!= 2)                                &&                             (j >= 9|| board[i][j+1] != 2) &&
-	    			    			((j <= 0 || i >= 20)|| board[i+1][j-1] != 2) && (i >= 20|| board[i+1][j] != 2) && ((j >= 9 || i >= 20)|| board[i+1][j+1] != 2)) { //check for complex shape, if not: 
+	    						// for 1 by 1
+	    						if (checkComplexShape(j, i)) {
 	    							if (j != 0 && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
 	    								board[i][j] = 0;
 	    								board[i][j-1] = 2;
 	    							}
 	    			    		}
+	    						
 	    						// for complex shapes
 	    	    				else {
 	    	    					if (j != 0 && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
@@ -354,14 +363,14 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					
 	    					if (board[i][j] == 2) { // check if it's moving shape
 	    						
-	    						if (((j <= 0 || i <= 0)|| board[i-1][j-1] != 2) && (i <= 0 || board[i-1][j] != 2) && ((j >= 9 || i <= 0)|| board[i-1][j+1] != 2) &&
-	    			    			(j <= 0 || board[i][j-1]!= 2)                                &&                             (j >= 9|| board[i][j+1] != 2) &&
-	    			    			((j <= 0 || i >= 20)|| board[i+1][j-1] != 2) && (i >= 20|| board[i+1][j] != 2) && ((j >= 9 || i >= 20)|| board[i+1][j+1] != 2)) { //check for complex shape, if not: 
+	    						// for 1 by 1
+	    						if (checkComplexShape(j, i)) { 
 	    							if (j != 9  && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
 	    								board[i][j] = 0;
 	    								board[i][j+1] = 2;
 	    							}
 	    			    		}
+	    						
 	    						// for complex shapes
 	    	    				else {
 	    	    					if (j != 9 && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
