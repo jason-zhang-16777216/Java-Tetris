@@ -162,7 +162,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			score++;
 		}
 	}
-	public static void endGame() { //Game-end condition
+	public static void checkEnd() { //Game-end condition
 		for (int ii = 0; ii <= 9; ii++) {
 			if (board[0][ii] == 1) { //Ends game if a piece is placed above the board.
 
@@ -177,7 +177,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
 			for (int j = 9; j >= 0; j--) { // Iterates over columns (right to left)
 				
-				if (board[i][j] == 2 && board[i + 1][j] == 1) { //if block is stacking on a locked block
+				if ((board[i][j] == 2 && board[i + 1][j] == 1) || (board[20][j] == 2 && i == 0)) { //if block is stacking on a locked block
 			    	    	
 					//make block remain on top of stacked block for enough time before locking 
 					t++;
@@ -189,31 +189,13 @@ public class TetrisGame extends JPanel implements ActionListener{
 			    	    	    }
 			    	    	}
 			    	    }
-			    	    endGame();
+			    	    checkEnd();
 			    	    board[0][5] = 2; //draw new block
 			    	    time = 1;
 			    	    t = 1;
 			    	}
 			    } 
-				else if (board[20][j] == 2 && i == 0) {//if block is at the bottom
-					t++;
-					//System.out.println(t);
-			    	if (t % 50 == 0) {
-			    		//System.out.println(t);
-			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
-			    			for (int jj = 9; jj >= 0; jj--) { // Iterates over columns (right to left)
-			    				if (board [ii][jj] == 2) {
-			    					board[ii][jj] = 1;
-			    	    	    }
-			    	    	}
-			    	    }
-			    		endGame();
-			    	    board[0][5] = 2; //draw new block
-			    	    time = 1;
-			    	    t = 1;
-			    	    		
-			    	}
-			    }
+				
 			    			
 			}
 		}
