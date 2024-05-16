@@ -1,5 +1,6 @@
 package tetris;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,12 +44,12 @@ public class TetrisGame extends JPanel implements ActionListener{
 	//time
 	static int time;
 	Timer clock = new Timer();
-	int t;
+	static int t;
 	
 	//pos, size, velocity of blocks
 
-	static int x = 140;
-	static int y = 30;
+	//static int x = 140;
+	//static int y = 30;
 	static int w = 30;
 	static int l = 30;
 	static int v = 30;
@@ -70,7 +71,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	
 	//constructor
 	public TetrisGame(){
-		time = 0;
+		board[0][5] = 2;
+		time = 1;
 		t = 1;
 		clock.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
@@ -90,14 +92,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 	 	graphics.fillRect(20, 60, 300, 600); 
 	 	graphics.setColor(Color.GRAY);
 	 	graphics.fillRect(20, 30, 300, 30);
-		// draw block
 	 	graphics.setColor(Color.BLACK);
-		Rectangle block = new Rectangle(x, y, w, l); 
-	    graphics.fill(block);
 	    
 	    
 	    //update game state
-	    for (int i = 20; i >= 1; i--) { //Iterates over rows.
+	    for (int i = 0; i <= 20; i++) { //Iterates over rows.
 	    	for (int j = 9; j >= 0; j--) { // Iterates over columns
 	    		if (board[i][j] == 1) {
 	    			graphics.fillRect(20+30*j, 30+30*i, w, l); //locks the block at (i,j)
@@ -109,6 +108,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		}
 	    		if(checkLine(i)) {
 	    			clearLine(i);
+	    			board[0][5] = 2;
 	    		}
 	    	}
 		}
@@ -121,7 +121,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 				return false;
 			}
 		}
-		return true;
+ 		return true;
 	}
 	public void clearLine(int index) { // Handles line clearing
 		for (var i = index; i > 0; i--) { // Moves each line above down by 1
@@ -135,40 +135,90 @@ public class TetrisGame extends JPanel implements ActionListener{
 			score++;
 		}
 	}
-	
-	public void actionPerformed(ActionEvent e) {
-		
-		time ++;
-		
-		//block moves down slowly
-		if (time % 50 == 0) {
-			y += v;
-		}
-		
-	    //check if block reached the bottom
-	    if (y == 630 || board[(y-30)/l + 1][(x-20)/l] == 1) {
-	    	
-	    	//make block remain on top of stacked block for enough time before stacking
-	    	t++; 
-	    	if (t % 50 == 0) {
-	    		board[(y-30)/30][(x-20)/30] = 1;
-				x = 140;
-				y = 30;
-				time = 0;
-				t = 1;
-	    	}
-	    }
-		
-		//Game-end condition.
-		for (int i = 0; i <= 9; i++) {
-			if (board[0][i] == 1) { //Ends game if a piece is placed above the board.
+	public static void endGame() { //Game-end condition
+		for (int ii = 0; ii <= 9; ii++) {
+			if (board[0][ii] == 1) { //Ends game if a piece is placed above the board.
+
 				System.out.println(score);
 				System.out.print("LOSE!!!");
 				System.exit(0); 
 			}
 		}
+	}
+	public static void checkReachBottom() { //check if block reached the bottom
+		
+		for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
+			for (int j = 9; j >= 0; j--) { // Iterates over columns (right to left)
+				
+				if (board[i][j] == 2 && board[i + 1][j] == 1) { //if block is stacking on a locked block
+			    	    	
+					//make block remain on top of stacked block for enough time before locking 
+					t++;
+			    	if (t % 50 == 0) {
+			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
+			    			for (int jj = 9; jj >= 0; jj--) { // Iterates over columns (right to left)
+			    				if (board [ii][jj] == 2) {
+			    					board[ii][jj] = 1;
+			    	    	    }
+			    	    	}
+			    	    }
+			    	    endGame();
+			    	    board[0][5] = 2; //draw new block
+			    	    time = 1;
+			    	    t = 1;
+			    	}
+			    } 
+				else if (board[20][j] == 2 && i == 0) {//if block is at the bottom
+					t++;
+					//System.out.println(t);
+			    	if (t % 50 == 0) {
+			    		//System.out.println(t);
+			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
+			    			for (int jj = 9; jj >= 0; jj--) { // Iterates over columns (right to left)
+			    				if (board [ii][jj] == 2) {
+			    					board[ii][jj] = 1;
+			    	    	    }
+			    	    	}
+			    	    }
+			    		endGame();
+			    	    board[0][5] = 2; //draw new block
+			    	    time = 1;
+			    	    t = 1;
+			    	    		
+			    	}
+			    }
+			    			
+			}
+		}
+		
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		
+		time ++;
+		checkReachBottom();
+		
+		//block moves down slowly
+		if (time % 50 == 0) {
+			for (int i = 20; i >= 0; i--) { //Iterates over rows (bottom to top)
+		    	for (int j = 9; j >= 0; j--) { // Iterates over columns (right to left)
+		    		if (board[i][j] == 2) {
+		    			board[i][j] = 0;
+		    			//System.out.println(i);
+		    			try {
+		    				board[i+1][j] = 2;
+		    			}
+		    			catch (ArrayIndexOutOfBoundsException ex) {
+		    				checkReachBottom();
+		    			}
+		    		}
+		    	}
+			}
+		}
+		
 		repaint();
 	}
+	
 	
 	public static final class KeyHandling implements KeyListener{
 		
@@ -179,90 +229,244 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    	switch(e.getKeyCode()) {
 	    			
 	    		case KeyEvent.VK_LEFT:
-	    			if (x == 20) {
-	    				x -=0;
+	    			int testL = 0;
+	    			for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
+	    				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
+	    					
+	    					if (board[i][j] == 2) { // check if it's moving shape
+	    						
+	    						if (((j <= 0 || i <= 0)|| board[i-1][j-1] != 2) && (i <= 0 || board[i-1][j] != 2) && ((j >= 9 || i <= 0)|| board[i-1][j+1] != 2) &&
+	    			    			(j <= 0 || board[i][j-1]!= 2)                                &&                             (j >= 9|| board[i][j+1] != 2) &&
+	    			    			((j <= 0 || i >= 20)|| board[i+1][j-1] != 2) && (i >= 20|| board[i+1][j] != 2) && ((j >= 9 || i >= 20)|| board[i+1][j+1] != 2)) { //check for complex shape, if not: 
+	    							if (j != 0  && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
+	    								board[i][j] = 0;
+	    								board[i][j-1] = 2;
+	    							}
+	    			    		}
+	    						// for complex shapes
+	    	    				else {
+	    	    					if (j != 0 && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
+	    	    						testL ++;
+	    	    					}
+	    	    					else {
+	    	    						testL--;
+	    	    					}
+	    						}
+	    					}
+	    				}
 	    			}
-	    			else {
-	    				x -= 30;
+	    			if (testL < 0) {
+	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
+		    				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
+		    					if (board[i][j] == 2 && j!=0) {
+		    						board[i][j] = 0;
+    								board[i][j-1] = 2;
+		    					}
+		    				}
+	    				}
 	    			}
 	    			break;
 	    			
 	    		case KeyEvent.VK_RIGHT:
-	    			if (x == 290) {
-	    				x +=0;
+	    			int testR = 0;
+	    			for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
+	    				for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
+	    					
+	    					if (board[i][j] == 2) { // check if it's moving shape
+	    						
+	    						if (((j <= 0 || i <= 0)|| board[i-1][j-1] != 2) && (i <= 0 || board[i-1][j] != 2) && ((j >= 9 || i <= 0)|| board[i-1][j+1] != 2) &&
+	    			    			(j <= 0 || board[i][j-1]!= 2)                                &&                             (j >= 9|| board[i][j+1] != 2) &&
+	    			    			((j <= 0 || i >= 20)|| board[i+1][j-1] != 2) && (i >= 20|| board[i+1][j] != 2) && ((j >= 9 || i >= 20)|| board[i+1][j+1] != 2)) { //check for complex shape, if not: 
+	    							if (j != 9  && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
+	    								board[i][j] = 0;
+	    								board[i][j+1] = 2;
+	    							}
+	    			    		}
+	    						// for complex shapes
+	    	    				else {
+	    	    					if (j != 9 && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
+	    	    						testR ++;
+	    	    					}
+	    	    					else {
+	    	    						testR--;
+	    	    					}
+	    						}
+	    					}
+	    				}
 	    			}
-	    			else {
-	    				x += 30;
+	    			if (testR < 0) {
+	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
+		    				for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
+		    					if (board[i][j] == 2 && j!=0) {
+		    						board[i][j] = 0;
+    								board[i][j+1] = 2;
+		    					}
+		    				}
+	    				}
 	    			}
 	    			break;
 	    			
 	    		
 	    			
 	    		case KeyEvent.VK_A:
-	    			if (x == 20) {
-	    				x -=0;
+	    			int testLl = 0;
+	    			for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
+	    				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
+	    					
+	    					if (board[i][j] == 2) { // check if it's moving shape
+	    						
+	    						if (((j <= 0 || i <= 0)|| board[i-1][j-1] != 2) && (i <= 0 || board[i-1][j] != 2) && ((j >= 9 || i <= 0)|| board[i-1][j+1] != 2) &&
+	    			    			(j <= 0 || board[i][j-1]!= 2)                                &&                             (j >= 9|| board[i][j+1] != 2) &&
+	    			    			((j <= 0 || i >= 20)|| board[i+1][j-1] != 2) && (i >= 20|| board[i+1][j] != 2) && ((j >= 9 || i >= 20)|| board[i+1][j+1] != 2)) { //check for complex shape, if not: 
+	    							if (j != 0 && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
+	    								board[i][j] = 0;
+	    								board[i][j-1] = 2;
+	    							}
+	    			    		}
+	    						// for complex shapes
+	    	    				else {
+	    	    					if (j != 0 && board[i][j-1] != 1) { // check if shape is touching leftmost boundary
+	    	    						testLl ++;
+	    	    					}
+	    	    					else {
+	    	    						testLl--;
+	    	    					}
+	    						}
+	    					}
+	    				}
 	    			}
-	    			else {
-	    				x -= 30;
+	    			if (testLl < 0) {
+	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
+		    				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
+		    					if (board[i][j] == 2 && j!=0) {
+		    						board[i][j] = 0;
+    								board[i][j-1] = 2;
+		    					}
+		    				}
+	    				}
 	    			}
 	    			break;
 	    			
 	    		case KeyEvent.VK_D:
-	    			if (x == 290) {
-	    				x +=0;
+	    			int testRr = 0;
+	    			for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
+	    				for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
+	    					
+	    					if (board[i][j] == 2) { // check if it's moving shape
+	    						
+	    						if (((j <= 0 || i <= 0)|| board[i-1][j-1] != 2) && (i <= 0 || board[i-1][j] != 2) && ((j >= 9 || i <= 0)|| board[i-1][j+1] != 2) &&
+	    			    			(j <= 0 || board[i][j-1]!= 2)                                &&                             (j >= 9|| board[i][j+1] != 2) &&
+	    			    			((j <= 0 || i >= 20)|| board[i+1][j-1] != 2) && (i >= 20|| board[i+1][j] != 2) && ((j >= 9 || i >= 20)|| board[i+1][j+1] != 2)) { //check for complex shape, if not: 
+	    							if (j != 9  && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
+	    								board[i][j] = 0;
+	    								board[i][j+1] = 2;
+	    							}
+	    			    		}
+	    						// for complex shapes
+	    	    				else {
+	    	    					if (j != 9 && board[i][j+1] != 1) { // check if shape is touching rightmost boundary
+	    	    						testRr ++;
+	    	    					}
+	    	    					else {
+	    	    						testRr--;
+	    	    					}
+	    						}
+	    					}
+	    				}
 	    			}
-	    			else {
-	    				x += 30;
-	    			};
+	    			if (testRr < 0) {
+	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
+		    				for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
+		    					if (board[i][j] == 2 && j!=0) {
+		    						board[i][j] = 0;
+    								board[i][j+1] = 2;
+		    					}
+		    				}
+	    				}
+	    			}
 	    			break;
 	    		
 	    		// drop	
 	    		case KeyEvent.VK_S:
-	    			int k = (x-20) / 30;
-	    			
-	    			for (int i = 0; i <= 20; i++) {
-	    				if (board[i][k] == 1) {
-	    					board[i-1][k] = 1;
-	    					x = 140;
-	    	    			y = 30;
-	    	    			time = 0;
-	    	    			break;
-	    				}
-	    				else if (i == 20 && board[i][k] == 0) {
-	    					board[20][k] = 1;
-	    					x = 140;
-	    	    			y = 30;
-	    	    			time = 0;
-	    	    			break;
+	    			int d = 0; //distance to move block down by
+	    			int all_d[] = {100};
+	    			for (int i = 20; i >= 0; i--) { //Iterates over rows (bottom to top)
+	    				for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
+	    					
+	    					if (board[i][j] == 2) { //find the distance from movable block to nearest locked in block below
+	    						for (int ii = i+1; ii < 21 && board[ii][j] != 1; ii++) { 
+	    							d++;
+	    						}
+	    						// add distance to list
+	    						int[] newArray = Arrays.copyOf(all_d, all_d.length + 1);
+	    						newArray[newArray.length - 1] = d;
+	    				        all_d = newArray;
+	    					}
+
 	    				}
 	    			}
+	    			
+	    			// find the smallest value in the list of distances
+	    			int min = all_d[0];
+	    		    for(int i=0; i<all_d.length; i++) { 
+	    		    	if(min > all_d[i]){
+	    		           min = all_d[i];
+	    		        }
+	    		    }
+	    		    // move all movable blocks down by min
+	    			for (int i = 20; i >= 0; i--) { 
+	    				for (int j = 9; j >= 0; j--) {
+	    					if (board[i][j] == 2) {
+	    						board[i][j] = 0;
+	    						board[i+min][j] = 2;
+	    						time = 1;
+	    					}
+	    				}
+	    			}
+	    			checkReachBottom();
 	    			break;
 	    			
 	    		// drop	
 	    		case KeyEvent.VK_DOWN:
-	    			int j = (x-20) / 30;
-	    			
-	    			for (int i = 0; i <= 20; i++) {
-	    				if (board[i][j] == 1) {
-	    					board[i-1][j] = 1;
-	    					x = 140;
-	    	    			y = 30;
-	    	    			time = 0;
-	    	    			break;
-	    				}
-	    				else if (i == 20 && board[i][j] == 0) {
-	    					board[20][j] = 1;
-	    					x = 140;
-	    	    			y = 30;
-	    	    			time = 0;
-	    	    			break;
+	    			int di = 0; //distance to move block down by
+	    			int all_di[] = {100};
+	    			for (int i = 20; i >= 0; i--) { //Iterates over rows (bottom to top)
+	    				for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
+	    					
+	    					if (board[i][j] == 2) { //find the distance from movable block to nearest locked in block below
+	    						for (int ii = i+1; ii < 21 && board[ii][j] != 1; ii++) { 
+	    							di++;
+	    						}
+	    						// add distance to list
+	    						int[] newArray = Arrays.copyOf(all_di, all_di.length + 1);
+	    						newArray[newArray.length - 1] = di;
+	    				        all_di = newArray;
+	    					}
+
 	    				}
 	    			}
+	    			
+	    			// find the smallest value in the list of distances
+	    			int minu = all_di[0];
+	    		    for(int i=0; i<all_di.length; i++) { 
+	    		    	if(minu > all_di[i]){
+	    		           minu = all_di[i];
+	    		        }
+	    		    }
+	    		    // move all movable blocks down by min
+	    			for (int i = 20; i >= 0; i--) { 
+	    				for (int j = 9; j >= 0; j--) {
+	    					if (board[i][j] == 2) {
+	    						board[i][j] = 0;
+	    						board[i+minu][j] = 2;
+	    						time = 1;
+	    					}
+	    				}
+	    			}
+	    			checkReachBottom();
 	    			break;
 	    			
-	    		
 	        }
-	    	
 	    }
 
 		@Override
