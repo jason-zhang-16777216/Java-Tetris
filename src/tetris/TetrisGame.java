@@ -562,7 +562,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 		
 		//draw  bg which changes color every time it's run
 		Color bg = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
-		game.setBackground(bg); 
+		window.setBackground(bg); 
+		game.setBackground(bg);
 		
 		//window settings
 		window.setBounds(350, 150, 650, 750); //size
