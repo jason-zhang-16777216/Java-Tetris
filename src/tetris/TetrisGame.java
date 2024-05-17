@@ -15,7 +15,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.*;
 
-//main class
 public class TetrisGame extends JPanel implements ActionListener{
 	static public int[][] board = {  //Initializes the board's starting state.
 		{0,0,0,0,0,0,0,0,0,0},//21 index 0
@@ -41,92 +40,20 @@ public class TetrisGame extends JPanel implements ActionListener{
 		{0,0,0,0,0,0,0,0,0,0} //1  index 20 
 	};
 	
-	//time
 	static int time;
 	Timer clock = new Timer();
-	static int t;
-	
-	//pos, size, velocity of blocks
-	static int w = 30;
+	static int lockTime;
+	static int w = 30; //Width and length. 
 	static int l = 30;
-	static int v = 30;
-	
 	static int score = 0;
-	
-	public int k;
-	
-	//block being controlled by player
-	Rectangle block;
-	
-	//keyHandling object to detect key presses
-	static KeyHandling kHandle = new KeyHandling();
-	
+	static KeyHandling kHandle = new KeyHandling();//Key-press detection. 
 	static Random r = new Random();
 	
-	public static void getBlock() {
-		char[] blockTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L','J'};
-		char type = blockTypes[r.nextInt(blockTypes.length)];
-		
-		switch(type) {
-			case('I'):
-				board[0][3] = 2;
-				board[0][4] = 2;
-				board[0][5] = 2;
-				board[0][6] = 2;
-				break;
-			
-			case('O'):
-				board[1][4] = 2;
-				board[0][4] = 2;
-				board[0][5] = 2;
-				board[1][5] = 2;
-				break;
-				
-			case('T'):
-				board[0][5] = 2;
-				board[1][4] = 2;
-				board[1][5] = 2;
-				board[1][6] = 2;
-				break;
-				
-			case('S'):
-				board[0][5] = 2;
-				board[0][4] = 2;
-				board[1][4] = 2;
-				board[1][3] = 2;
-				break;
-			
-			case('Z'):
-				board[1][5] = 2;
-				board[1][4] = 2;
-				board[0][4] = 2;
-				board[0][3] = 2;
-				break;
-				
-			case('L'):
-				board[0][5] = 2;
-				board[1][3] = 2;
-				board[1][4] = 2;
-				board[1][5] = 2;
-				break;
-				
-			case('J'):
-				board[0][3] = 2;
-				board[1][3] = 2;
-				board[1][4] = 2;
-				board[1][5] = 2;
-				break;
-				
-			case('A'):
-				board[0][5] = 2;
-		}
-		
-	}
 	
-	//constructor
+	
 	public TetrisGame(){
-		time = 1;
-		t = 1;
+		time = 0;
+		lockTime = 0;
 		clock.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				actionPerformed(null);
@@ -197,6 +124,65 @@ public class TetrisGame extends JPanel implements ActionListener{
 			}
 		}
 	}
+	public static void getBlock() {
+		char[] blockTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L','J'}; 
+		char type = blockTypes[r.nextInt(blockTypes.length)];
+		
+		switch(type) {
+			case('I'):
+				board[0][3] = 2; // □□□■■■■□□□
+				board[0][4] = 2; // □□□□□□□□□□
+				board[0][5] = 2;
+				board[0][6] = 2;
+				break;
+			
+			case('O'):
+				board[1][4] = 2; // □□□□■■□□□□
+				board[0][4] = 2; // □□□□■■□□□□
+				board[0][5] = 2;
+				board[1][5] = 2;
+				break;
+				
+			case('T'):
+				board[0][5] = 2; // □□□□□■□□□□
+				board[1][4] = 2; // □□□□■■■□□□
+				board[1][5] = 2;
+				board[1][6] = 2;
+				break;
+				
+			case('S'):
+				board[0][5] = 2; // □□□□■■□□□□
+				board[0][4] = 2; // □□□■■□□□□□
+				board[1][4] = 2;
+				board[1][3] = 2;
+				break;
+			
+			case('Z'):
+				board[1][5] = 2; // □□□■■□□□□□
+				board[1][4] = 2; // □□□□■■□□□□
+				board[0][4] = 2;
+				board[0][3] = 2;
+				break;
+				
+			case('L'):
+				board[0][5] = 2; // □□□□□■□□□□
+				board[1][3] = 2; // □□□■■■□□□□
+				board[1][4] = 2;
+				board[1][5] = 2;
+				break;
+				
+			case('J'):
+				board[0][3] = 2; // □□□■□□□□□□
+				board[1][3] = 2; // □□□■■■□□□□
+				board[1][4] = 2;
+				board[1][5] = 2;
+				break;
+				
+			case('A'):
+				board[0][5] = 2; // □□□□□■□□□□
+		}
+		
+	}
 	public static void checkReachBottom() { //check if block reached the bottom
 		
 		for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
@@ -205,8 +191,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 				if (board[i][j] == 2 && board[i + 1][j] == 1) { //if block is stacking on a locked block
 			    	    	
 					//make block remain on top of stacked block for enough time before locking 
-					t++;
-			    	if (t % 50 == 0) {
+					lockTime++;
+			    	if (lockTime % 50 == 0) {
 			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
 			    			for (int jj = 9; jj >= 0; jj--) { // Iterates over columns (right to left)
 			    				if (board [ii][jj] == 2) {
@@ -217,14 +203,14 @@ public class TetrisGame extends JPanel implements ActionListener{
 			    	    endGame();
 			    	    getBlock(); //draw new block
 			    	    time = 1;
-			    	    t = 1;
+			    	    lockTime = 1;
 			    	}
 			    } 
 				else if (board[20][j] == 2 && i == 0) {//if block is at the bottom
-					t++;
-					//System.out.println(t);
-			    	if (t % 50 == 0) {
-			    		//System.out.println(t);
+					lockTime++;
+					//System.out.println(lockTime);
+			    	if (lockTime % 50 == 0) {
+			    		//System.out.println(lockTime);
 			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
 			    			for (int jj = 9; jj >= 0; jj--) { // Iterates over columns (right to left)
 			    				if (board [ii][jj] == 2) {
@@ -235,7 +221,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			    		endGame();
 			    	    getBlock(); //draw new block
 			    	    time = 1;
-			    	    t = 1;
+			    	    lockTime = 1;
 			    	    		
 			    	}
 			    }
@@ -551,6 +537,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 
 	//main function
 	public static void main(String[] args) {
+		
+		
 		//set title
 		JFrame window = new JFrame("Tetris");
 		
@@ -562,7 +550,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 		
 		//draw  bg which changes color every time it's run
 		Color bg = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
-		game.setBackground(bg); 
+		window.setBackground(bg); 
+		game.setBackground(bg);
 		
 		//window settings
 		window.setBounds(350, 150, 650, 750); //size
@@ -570,10 +559,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //close
 		window.setVisible(true); //visibility
 		
+		
 		//add key listener for key presses
 		window.addKeyListener(kHandle);
-		
-		
 
 	}
 }
