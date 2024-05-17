@@ -162,7 +162,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		}
 	    		if(checkLine(i)) {
 	    			clearLine(i);
-	    			getBlock();;
 	    		}
 	    	}
 		}
@@ -189,6 +188,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			board[0][i] = 0;
 			score++;
 		}
+		getBlock(); //draw new block
 	}
 	public static void endGame() { //Game-end condition
 		for (int ii = 0; ii <= 9; ii++) {
