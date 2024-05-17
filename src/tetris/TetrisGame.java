@@ -124,7 +124,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			}
 		}
 	}
-	public static void getBlock() {
+	public static void getBlock() { // Chooses a random block type and then adds it to the board. s
 		char[] blockTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L','J'}; 
 		char type = blockTypes[r.nextInt(blockTypes.length)];
 		
