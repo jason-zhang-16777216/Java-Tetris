@@ -312,6 +312,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    				}
 	    				}
 	    			}
+	    			checkReachBottom();
 	    			break;
 	    			
 	    		case KeyEvent.VK_RIGHT:
@@ -352,6 +353,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    				}
 	    				}
 	    			}
+	    			checkReachBottom();
 	    			break;
 	    			
 	    		
@@ -394,6 +396,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    				}
 	    				}
 	    			}
+	    			checkReachBottom();
 	    			break;
 	    			
 	    		case KeyEvent.VK_D:
@@ -434,6 +437,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    				}
 	    				}
 	    			}
+	    			checkReachBottom();
 	    			break;
 	    		
 	    		// drop	
