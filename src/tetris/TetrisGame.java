@@ -67,8 +67,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 		char[] blockTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L','J'};
 		char type = blockTypes[r.nextInt(blockTypes.length)];
 		
-		System.out.println(type);
-		
 		switch(type) {
 			case('I'):
 				board[0][3] = 2;
@@ -171,7 +169,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	
 	public boolean checkLine(int index) { // Checks for filled lines
 		for (var i = 0; i < 10; i++) {
-			if (board[index][i] == 0) {
+			if (board[index][i] != 1) {
 				return false;
 			}
 		}
@@ -188,7 +186,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			board[0][i] = 0;
 			score++;
 		}
-		getBlock(); //draw new block
+		//getBlock(); //draw new block
 	}
 	public static void endGame() { //Game-end condition
 		for (int ii = 0; ii <= 9; ii++) {
