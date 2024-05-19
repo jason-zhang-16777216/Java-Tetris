@@ -116,8 +116,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 		for (int ii = 0; ii <= 9; ii++) {
 			if (board[0][ii] == 1) { //Ends game if a piece is placed above the board.
 
-				System.out.println(score);
-				System.out.print("LOSE!!!");
+				System.out.println("SCORE: " + score);
+				System.out.print("YOU LOSE!!! HAHA!");
 				System.exit(0); 
 			}
 		}
@@ -284,7 +284,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    				}
 	    			}
 	    			if (testL == 0) {
-	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
+	    				for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
 		    				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
 		    					if (board[i][j] == 2) {
 		    						board[i][j] = 0;
@@ -325,7 +325,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    				}
 	    			}
 	    			if (testR == 0) {
-	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
+	    				for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
 		    				for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
 		    					if (board[i][j] == 2) {
 		    						board[i][j] = 0;
@@ -368,7 +368,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    				}
 	    			}
 	    			if (testLl == 0) {
-	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
+	    				for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
 		    				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
 		    					if (board[i][j] == 2) {
 		    						board[i][j] = 0;
@@ -408,7 +408,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    				}
 	    			}
 	    			if (testRr == 0) {
-	    				for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
+	    				for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
 		    				for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
 		    					if (board[i][j] == 2) {
 		    						board[i][j] = 0;
