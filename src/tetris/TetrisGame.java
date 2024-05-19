@@ -1,5 +1,4 @@
 package tetris;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Timer;
@@ -10,7 +9,6 @@ import javax.swing.JTextField;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.*;
@@ -48,12 +46,12 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static int score = 0;
 	static KeyHandling kHandle = new KeyHandling();//Key-press detection. 
 	static Random r = new Random();
-	
+	static int check = 1; //make sure soft drop lock time is consistent
 	
 	
 	public TetrisGame(){
 		time = 0;
-		lockTime = 0;
+		lockTime = 1;
 		clock.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				actionPerformed(null);
@@ -183,38 +181,22 @@ public class TetrisGame extends JPanel implements ActionListener{
 		}
 		
 	}
-	public static void checkReachBottom() { //check if block reached the bottom
+	public static void checkReachBottom() { //check if block reached the bottom and lock piece
 		
 		for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
 			for (int j = 9; j >= 0; j--) { // Iterates over columns (right to left)
 				
-				if (board[i][j] == 2 && board[i + 1][j] == 1) { //if block is stacking on a locked block
-			    	    	
-					//make block remain on top of stacked block for enough time before locking 
-					lockTime++;
+				if ((board[i][j] == 2 && board[i + 1][j] == 1) || (board[20][j] == 2 && i == 0)) { //if block is stacking on a locked block or at the bottom
+			    	
+					if (check == 1) { //make sure soft drop lock time is consistent
+						lockTime++;
+						check ++;
+					}
 			    	if (lockTime % 50 == 0) {
 			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
 			    			for (int jj = 9; jj >= 0; jj--) { // Iterates over columns (right to left)
 			    				if (board [ii][jj] == 2) {
-			    					board[ii][jj] = 1;
-			    	    	    }
-			    	    	}
-			    	    }
-			    	    endGame();
-			    	    getBlock(); //draw new block
-			    	    time = 1;
-			    	    lockTime = 1;
-			    	}
-			    } 
-				else if (board[20][j] == 2 && i == 0) {//if block is at the bottom
-					lockTime++;
-					//System.out.println(lockTime);
-			    	if (lockTime % 50 == 0) {
-			    		//System.out.println(lockTime);
-			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
-			    			for (int jj = 9; jj >= 0; jj--) { // Iterates over columns (right to left)
-			    				if (board [ii][jj] == 2) {
-			    					board[ii][jj] = 1;
+			    					board[ii][jj] = 1; //locking all pieces
 			    	    	    }
 			    	    	}
 			    	    }
@@ -224,10 +206,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 			    	    lockTime = 1;
 			    	    		
 			    	}
-			    }
-			    			
+			    } 			
 			}
 		}
+		check = 1;
 		
 	}
 	public static boolean checkComplexShape(int j, int i) { //check if shape is complex
@@ -241,30 +223,29 @@ public class TetrisGame extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		
 		time ++;
 		checkReachBottom();
-		
 		//block moves down slowly
 		if (time % 50 == 0) {
 			for (int i = 20; i >= 0; i--) { //Iterates over rows (bottom to top)
 		    	for (int j = 9; j >= 0; j--) { // Iterates over columns (right to left)
+		    		checkReachBottom();
+		    		
 		    		if (board[i][j] == 2) {
 		    			board[i][j] = 0;
-		    			try {
-		    				board[i+1][j] = 2;
-		    			}
-		    			catch (ArrayIndexOutOfBoundsException ex) { //if block is at bottom (index out of range)
-		    				checkReachBottom();
-		    			}
+				    	try {
+				    		board[i+1][j] = 2;
+				    	}
+				    	catch (ArrayIndexOutOfBoundsException ex) { //if block is at bottom (index out of range)
+				    		checkReachBottom();
+				    	}
+		    			
 		    		}
 		    	}
 			}
 		}
-		
 		repaint();
 	}
-	
 	
 	public static final class KeyHandling implements KeyListener{
 		
@@ -396,7 +377,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    				}
 	    				}
 	    			}
-	    			checkReachBottom();
 	    			break;
 	    			
 	    		case KeyEvent.VK_D:
