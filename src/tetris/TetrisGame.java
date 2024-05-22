@@ -82,12 +82,12 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    //update game state
 	    for (int i = 0; i <= 20; i++) { //Iterates over rows.
 	    	for (int j = 9; j >= 0; j--) { // Iterates over columns
-	    		if (board[i][j] == 1) {
+	    		if ((board[i][j] == 1)||(board[i][j] == 2)) {
 	    			graphics.fillRect(20+30*j, 30+30*i, w, l); //locks the block at (i,j)
-	    			
-	    		}
-	    		else if (board[i][j] == 2) {
-	    			graphics.fillRect(20+30*j, 30+30*i, w, l); //fills the block at (i,j) (not locked)
+	    			graphics.setColor(Color.WHITE);
+	    			graphics.fillRect(22+30*j, 32+30*i, w-4, l-4);
+	    			graphics.setColor(Color.BLACK);
+	    			graphics.fillRect(24+30*j, 34+30*i, w-8, l-8);
 	    			
 	    		}
 	    		if(checkLine(i)) {
