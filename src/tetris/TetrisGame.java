@@ -52,9 +52,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static int check = 1; //make sure soft drop lock time is consistent
 	static int[] x_values = {100}; //all x values of block
 	static int[] y_values = {100}; //all y values of block
-	static int rotationNum = 1;
+	static int rotationNum = 1; 
 	static boolean gameOver = false;
-	static int killScreenLine = 0;
+	static int killScreenLine = 0; //the line in the kill screen (ending animation)
+	
 	public TetrisGame(){
 		time = 0;
 		lockTime = 1;
@@ -149,7 +150,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		}
 		rotationNum = 1;
 		char[] blockTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L','J'}; 
-		type = blockTypes[6]; //r.nextInt(blockTypes.length)
+		type = blockTypes[r.nextInt(blockTypes.length)]; //r.nextInt(blockTypes.length)
 		
 		switch(type) {
 			case('I'):
@@ -536,15 +537,12 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    						
 	    						// make list of all coodinates of block
 	    						for (int ii = 1; ii < x_values.length; ii++) {
-	    							//System.out.println(x_values.length);
 	    							if (x_values[ii] == j) {
 	    								testx = false;
 	    							}
 	    						}
 	    						
 	    						for (int ii = 1; ii < y_values.length; ii++) {
-	    							//System.out.println(y_values.length);
-	    							//System.out.println(j + "yes");
 	    							if (y_values[ii] == i) {
 	    								testy = false;
 	    							}
@@ -584,22 +582,28 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    						}
 	    						
 	    						break;
-	    					/*
+	    						
 	    					case('S'):
-	    						if() {
+	    						if(y_values[1]+1 <= 20 && board[y_values[2]][x_values[2]] != 1 && board[y_values[1]+1][x_values[1]] != 1) {
 	    							if (rotationNum == 1) {
-	    								
+	    								board[y_values[2]][x_values[1]] = 0;
+	    								board[y_values[2]][x_values[3]] = 0;
+	    								board[y_values[2]][x_values[2]] = 2;
+	    								board[y_values[1]+1][x_values[1]] = 2;
 	    								rotationNum++;
 	    							}
 	    						}
-	    						if() {
+	    						if(y_values[2]-1 >= 0 && board[y_values[1]][x_values[3]] != 1 && board[y_values[2]-1][x_values[1]] != 1) {
 	    							if (rotationNum == 3) {
-	    								
+	    								board[y_values[1]][x_values[1]] = 0;
+	    								board[y_values[1]][x_values[2]] = 0;
+	    								board[y_values[1]][x_values[3]] = 2;
+	    								board[y_values[2]-1][x_values[1]] = 2;
 	    								rotationNum++;
 	    							}
 	    						}
 	    						break;
-	    					
+	    						/*
 	    					case('Z'):
 	    						if() {
 	    							if (rotationNum == 1) {
@@ -616,7 +620,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    						break;
 	    					*/
 	    					case('L'):
-	    						if(y_values[1]+1 <= 20 && board[y_values[2]][x_values[2]] != 1 && board[y_values[2]][x_values[3]] != 1 && board[y_values[1]-1][x_values[2]] != 1) {
+	    						if(y_values[1]+1 <= 20 && board[y_values[2]][x_values[2]] != 1 && board[y_values[2]][x_values[3]] != 1 && board[y_values[1]+1][x_values[2]] != 1) {
 	    							if (rotationNum == 1) {
 	    								board[y_values[1]][x_values[1]] = 0;
 	    								board[y_values[2]][x_values[1]] = 0;
@@ -639,21 +643,31 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    							}
 	    						}
 	    						break;
-	    					/*
+	    					
 	    					case('J'):
-	    						if() {
+	    						if(y_values[1]+1 <= 20 && board[y_values[2]][x_values[2]] != 1 && board[y_values[1]+1][x_values[2]]!= 1 && board[y_values[1]+1][x_values[3]] != 1) {
 	    							if (rotationNum == 1) {
-	    								
-	    								rotationNum++;
+	    								board[y_values[1]][x_values[1]] = 0;
+	    								board[y_values[1]][x_values[3]] = 0;
+	    								board[y_values[2]][x_values[3]] = 0;
+	    								board[y_values[2]][x_values[2]] = 2;
+	    								board[y_values[1]+1][x_values[2]] = 2;
+	    								board[y_values[1]+1][x_values[3]] = 2;
+    									rotationNum++;
 	    							}
 	    						}
-	    						if() {
+	    						if(y_values[2]-1 >= 0 && board[y_values[1]][x_values[2]] != 1 && board[y_values[2]-1][x_values[2]] != 1 && board[y_values[2]-1][x_values[1]] != 1) {
 	    							if (rotationNum == 3) {
-	    								
+	    								board[y_values[1]][x_values[1]] = 0;
+	    								board[y_values[2]][x_values[1]] = 0;
+	    								board[y_values[2]][x_values[3]] = 0;
+	    								board[y_values[1]][x_values[2]] = 2;
+	    								board[y_values[2]-1][x_values[2]] = 2;
+	    								board[y_values[2]-1][x_values[1]] = 2;
 	    								rotationNum++;
 	    							}
 	    						}
-	    						break;*/
+	    						break;
 	    				}
 	    			}
 	    			else if (y_values.length == 4) {
@@ -676,22 +690,28 @@ public class TetrisGame extends JPanel implements ActionListener{
     							}
     							
     							break;
-    						/*
+    						
     						case('S'):
-    							if() {
+    							if(x_values[1]+1 <= 9 && board[y_values[1]][x_values[2]] != 1 && board[y_values[2]][x_values[1]+1] != 1) {
     								if (rotationNum == 2) {
-    									
+    									board[y_values[2]][x_values[2]] = 0;
+	    								board[y_values[3]][x_values[2]] = 0;
+	    								board[y_values[1]][x_values[2]] = 2;
+	    								board[y_values[2]][x_values[1]+1] = 2;
     									rotationNum++;
     								}
     							}
-    							if() {
+    							if(x_values[2]-1 >= 0 && board[y_values[2]][x_values[2]-1] != 1 && board[y_values[3]][x_values[1]] != 1) {
     								if (rotationNum == 4) {
-    									
+    									board[y_values[1]][x_values[1]] = 0;
+	    								board[y_values[2]][x_values[1]] = 0;
+	    								board[y_values[2]][x_values[2]-1] = 2;
+	    								board[y_values[3]][x_values[1]] = 2;
     									rotationNum = 1;
     								}
     							}
     							break;
-    			
+    							/*
     						case('Z'):
     							if() {
     								if (rotationNum == 2) {
@@ -719,7 +739,7 @@ public class TetrisGame extends JPanel implements ActionListener{
     									rotationNum++;
     								}
     							}
-    							if(x_values[2]-1 >= 0 && board[y_values[2]][x_values[2]] != 1 && board[y_values[2]][x_values[2]-1] != 1 && board[y_values[3]][x_values[1]] != 1) {
+    							if(x_values[2]-1 >= 0 && board[y_values[2]][x_values[1]] != 1 && board[y_values[2]][x_values[2]-1] != 1 && board[y_values[3]][x_values[1]] != 1) {
     								if (rotationNum == 4) {
     									board[y_values[1]][x_values[1]] = 0;
 	    								board[y_values[1]][x_values[2]] = 0;
@@ -731,21 +751,31 @@ public class TetrisGame extends JPanel implements ActionListener{
     								}
     							}
     							break;
-    						/*
+    						
     						case('J'):
-    							if() {
+    							if(x_values[1]+1 <= 9 && board[y_values[2]][x_values[2]] != 1 && board[y_values[2]][x_values[1]+1] != 1 && board[y_values[1]][x_values[1]+1] != 1) {
     								if (rotationNum == 2) {
-    									
+    									board[y_values[1]][x_values[1]] = 0;
+	    								board[y_values[1]][x_values[2]] = 0;
+	    								board[y_values[3]][x_values[1]] = 0;
+	    								board[y_values[2]][x_values[2]] = 2;
+	    								board[y_values[2]][x_values[1]+1] = 2;
+	    								board[y_values[1]][x_values[1]+1] = 2;
     									rotationNum++;
     								}
     							}
-    							if() {
+    							if(x_values[1]-1 >= 0 && board[y_values[2]][x_values[1]-1] != 1 && board[y_values[2]][x_values[2]] != 1 && board[y_values[3]][x_values[1]-1] != 1) {
     								if (rotationNum == 4) {
-    									
+    									board[y_values[1]][x_values[1]] = 0;
+	    								board[y_values[3]][x_values[1]] = 0;
+	    								board[y_values[3]][x_values[2]] = 0;
+	    								board[y_values[2]][x_values[1]-1] = 2;
+	    								board[y_values[3]][x_values[1]-1] = 2;
+	    								board[y_values[2]][x_values[2]] = 2;
     									rotationNum = 1;
     								}
     							}
-    							break;*/
+    							break;
 	    				}
 	    			}
 	    			else if (x_values.length == 5) {
