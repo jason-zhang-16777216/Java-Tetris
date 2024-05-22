@@ -53,8 +53,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static int[] x_values = {100}; //all x values of block
 	static int[] y_values = {100}; //all y values of block
 	static int rotationNum = 1;
-	
-	
+	static boolean gameOver = false;
+	static int killScreenLine = 0;
 	public TetrisGame(){
 		time = 0;
 		lockTime = 1;
@@ -94,10 +94,26 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		}
 	    	}
 		}
-
+	    if(gameOver == true) {
+	    	if(time % 10 == 0) {
+	    		for(var i = 0; i < 10; i++) {
+	    			if(time % 10 == 0) {
+	    				board[20-killScreenLine][i] = 1;
+	    			}
+	    		}
+	    		if(killScreenLine < 20) {
+	    			killScreenLine++;
+	    		}else{
+	    			System.exit(0);	    		
+	    		}
+	    	}
+	    }
 	}
 	
 	public boolean checkLine(int index) { // Checks for filled lines
+		if(gameOver == true) {
+			return(false);
+		}
 		for (var i = 0; i < 10; i++) {
 			if (board[index][i] != 1) {
 				return false;
@@ -123,11 +139,14 @@ public class TetrisGame extends JPanel implements ActionListener{
 			if (board[0][i] == 1) { //Ends game if a piece is placed above the board.
 				System.out.println("SCORE: " + score);
 				System.out.print("YOU LOSE!!! HAHAHAHAHAHAHA! (ahem ahem... sorry, you wann try again..? :>)");
-				System.exit(0); 
+				gameOver = true;
 			}
 		}
 	}
 	public static void getBlock() { // Chooses a random block type and then adds it to the board. s
+		if(gameOver == true) {
+			return;
+		}
 		rotationNum = 1;
 		char[] blockTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L','J'}; 
 		type = blockTypes[6]; //r.nextInt(blockTypes.length)
@@ -507,7 +526,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    			break;
 	    			
 	    		// rotation counterclockwise (helllllllllp)
-	    		case KeyEvent.VK_W:
+	    		case KeyEvent.VK_Z:
 	    			boolean testx = true;
 	    			boolean testy = true;
 	    			for (int i = 20; i >= 0; i--) { 
