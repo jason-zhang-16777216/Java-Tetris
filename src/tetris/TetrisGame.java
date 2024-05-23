@@ -39,8 +39,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 		{0,0,0,0,0,0,0,0,0,0},//2  index 19
 		{0,0,0,0,0,0,0,0,0,0} //1  index 20 
 	};
-	
 	static int time;
+	static int fallTime;
 	Timer clock = new Timer();
 	static int lockTime;
 	static int w = 30; //Width and length. 
@@ -49,7 +49,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static KeyHandling kHandle = new KeyHandling();//Key-press detection. 
 	static Random r = new Random();
 	static char type; //type of block
-	static int check = 1; //make sure soft drop lock time is consistent
+	static int check = 1; //make sure soft drop lock fallTime is consistent
 	static int[] x_values = {100}; //all x values of block
 	static int[] y_values = {100}; //all y values of block
 	static int rotationNum = 1; 
@@ -58,6 +58,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	
 	public TetrisGame(){
 		time = 0;
+		fallTime = 0;
 		lockTime = 1;
 		clock.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
@@ -98,9 +99,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    
 	    //prints game over animation
 	    if(gameOver == true) {
-	    	if(time % 10 == 0) {
+	    	if(fallTime % 10 == 0) {
 	    		for(var i = 0; i < 10; i++) {
-	    			if(time % 10 == 0) {
+	    			if(fallTime % 10 == 0) {
 	    				board[20-killScreenLine][i] = 1;
 	    			}
 	    		}
@@ -216,7 +217,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 				
 				if ((board[i][j] == 2 && board[i + 1][j] == 1) || (board[20][j] == 2 && i == 0)) { //if block is stacking on a locked block or at the bottom
 			    	
-					if (check == 1) { //make sure soft drop lock time is consistent
+					if (check == 1) { //make sure soft drop lock fallTime is consistent
 						lockTime++;
 						check ++;
 					}
@@ -230,7 +231,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			    	    }
 			    		endGame();
 			    	    getBlock(); //draw new block
-			    	    time = 1;
+			    	    fallTime =1;
 			    	    lockTime = 1;
 			    	    		
 			    	}
@@ -251,11 +252,12 @@ public class TetrisGame extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		time ++;
+		fallTime ++;
+		time++;
 		checkReachBottom();
 		
 		//block moves down slowly
-		if (time % 50 == 0) {
+		if (fallTime % 50 == 0) {
 			for (int i = 20; i >= 0; i--) { //Iterates over rows (bottom to top)
 		    	for (int j = 9; j >= 0; j--) { // Iterates over columns (right to left)
 		    		checkReachBottom();
@@ -481,7 +483,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					if (board[i][j] == 2) {
 	    						board[i][j] = 0;
 	    						board[i+min][j] = 2;
-	    						time = 1;
+	    						fallTime = 1;
 	    					}
 	    				}
 	    			}
@@ -522,7 +524,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					if (board[i][j] == 2) {
 	    						board[i][j] = 0;
 	    						board[i+minu][j] = 2;
-	    						time = 1;
+	    						fallTime = 1;
 	    					}
 	    				}
 	    			}
@@ -880,7 +882,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		Container c = window.getContentPane();
 		c.add(game);
 		
-		//draw  bg which changes color every time it's run
+		//draw  bg which changes color every fallTime it's run
 		Color bg = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
 		window.setBackground(bg); 
 		game.setBackground(bg);
