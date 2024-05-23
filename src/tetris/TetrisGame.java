@@ -95,6 +95,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		}
 	    	}
 		}
+	    
+	    //prints game over animation
 	    if(gameOver == true) {
 	    	if(time % 10 == 0) {
 	    		for(var i = 0; i < 10; i++) {
@@ -105,6 +107,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		if(killScreenLine < 20) {
 	    			killScreenLine++;
 	    		}else{
+	    			System.out.println("SCORE: " + score);
+					System.out.println("YOU LOSE!!! HAHAHAHAHAHAHA! (ahem ahem... sorry, you wann try again..? :>)");
 	    			System.exit(0);	    		
 	    		}
 	    	}
@@ -138,8 +142,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 		
 		for (int i = 0; i <= 9; i++) {
 			if (board[0][i] == 1) { //Ends game if a piece is placed above the board.
-				System.out.println("SCORE: " + score);
-				System.out.print("YOU LOSE!!! HAHAHAHAHAHAHA! (ahem ahem... sorry, you wann try again..? :>)");
 				gameOver = true;
 			}
 		}
@@ -221,7 +223,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			    	if (lockTime % 50 == 0) {
 			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
 			    			for (int jj = 9; jj >= 0; jj--) { // Iterates over columns (right to left)
-			    				if (board [ii][jj] == 2) {
+			    				if (board[ii][jj] == 2) {
 			    					board[ii][jj] = 1; //locking all pieces
 			    	    	    }
 			    	    	}
@@ -251,6 +253,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		time ++;
 		checkReachBottom();
+		
 		//block moves down slowly
 		if (time % 50 == 0) {
 			for (int i = 20; i >= 0; i--) { //Iterates over rows (bottom to top)
