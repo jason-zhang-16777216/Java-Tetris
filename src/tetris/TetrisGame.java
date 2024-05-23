@@ -795,17 +795,15 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    				case('T'):
 	    					if(y_values[1]+1 <= 20 && board[y_values[1]+1][x_values[2]] != 1) {
 	    						if (rotationNum == 1) {
-	    							
-	    							board[y_values[1]][x_values[1]] = 0;
-    								board[y_values[2]][x_values[1]-1] = 2;
+	    							board[y_values[1]][x_values[3]] = 0;
+	    							board[y_values[1]+1][x_values[2]] = 2;
 	    							rotationNum++;
 	    						}
 	    					}
 	    					if(y_values[2]-1 >= 0 && board[y_values[2]-1][x_values[1]] != 1) {
 	    						if (rotationNum == 3) {
-	    							
-	    							board[y_values[3]][x_values[1]] = 0;
-    								board[y_values[2]][x_values[1]+1] = 2;
+	    							board[y_values[2]][x_values[2]] = 0;
+	    							board[y_values[2]-1][x_values[1]] = 2;
 	    							rotationNum++;
 	    						}
 	    					}
@@ -813,94 +811,92 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    					break;
 	    						
 	    				case('S'):
-	    					if(y_values[1]+1 <= 20 && board[y_values[2]][x_values[2]] != 1 && board[y_values[1]+1][x_values[1]] != 1) {
+	    					if(y_values[1]+1 <= 20 && board[y_values[1]][x_values[3]] != 1 && board[y_values[1]+1][x_values[3]] != 1) {
 	    						if (rotationNum == 1) {
-	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[2]][x_values[1]] = 0;
-	    							board[y_values[2]][x_values[2]-1] = 2;
-	    							board[y_values[3]][x_values[1]] = 2;
-	    							
+	    							board[y_values[1]][x_values[2]] = 0;
+	    							board[y_values[2]][x_values[3]] = 0;
+	    							board[y_values[1]][x_values[3]] = 2;
+	    							board[y_values[1]+1][x_values[3]] = 2;
 	    							rotationNum++;
 	    						}
 	    					}
-	    					if(y_values[2]-1 >= 0 && board[y_values[1]][x_values[3]] != 1 && board[y_values[2]-1][x_values[1]] != 1) {
+	    					if(y_values[2]-1 >= 0 && board[y_values[2]][x_values[2]] != 1 && board[y_values[2]-1][x_values[2]] != 1) {
 	    						if (rotationNum == 3) {
-	    							
-	    							board[y_values[2]][x_values[2]] = 0;
-	    							board[y_values[3]][x_values[2]] = 0;
-	    							board[y_values[1]][x_values[2]] = 2;
-	    							board[y_values[2]][x_values[1]+1] = 2;
+	    							board[y_values[1]][x_values[2]] = 0;
+	    							board[y_values[2]][x_values[3]] = 0;
+	    							board[y_values[2]][x_values[2]] = 2;
+	    							board[y_values[2]-1][x_values[2]] = 2;
 	    							rotationNum++;
 	    						}
 	    					}
 	    					break;
 	    						
 	    				case('Z'):
-	    					if(y_values[1]+1 <= 20 && board[y_values[1]][x_values[3]] != 1 && board[y_values[1]+1][x_values[3]] != 1) {
+	    					if(y_values[1]+1 <= 20 && board[y_values[2]][x_values[1]] != 1 && board[y_values[1]+1][x_values[2]] != 1) {
 	    						if (rotationNum == 1) {
-	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[3]][x_values[2]] = 0;
-	    							board[y_values[3]][x_values[1]-1] = 2;
-	    							board[y_values[3]][x_values[1]] = 2;
+	    							board[y_values[2]][x_values[2]] = 0;
+	    							board[y_values[2]][x_values[3]] = 0;
+	    							board[y_values[2]][x_values[1]] = 2;
+	    							board[y_values[1]+1][x_values[2]] = 2;
 	    							rotationNum++;
 	    						}
 	    					}
-	    					if(y_values[2]-1 >= 0 && board[y_values[2]][x_values[1]] != 1 && board[y_values[2]-1][x_values[1]] != 1) {
+	    					if(y_values[2]-1 >= 0 && board[y_values[1]][x_values[3]] != 1 && board[y_values[2]-1][x_values[2]] != 1) {
 	    						if (rotationNum == 3) {
 	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[3]][x_values[2]] = 0;
-	    							board[y_values[1]][x_values[2]+1] = 2;
-	    							board[y_values[1]][x_values[2]] = 2;
+	    							board[y_values[1]][x_values[2]] = 0;
+	    							board[y_values[1]][x_values[3]] = 2;
+	    							board[y_values[2]-1][x_values[2]] = 2;
 	    							rotationNum++;
 	    						}
 	    					}
 	    					break;
 	    					
 	    				case('L'):
-	    					if(y_values[1]+1 <= 20 && board[y_values[2]][x_values[2]] != 1 && board[y_values[2]][x_values[3]] != 1 && board[y_values[1]+1][x_values[2]] != 1) {
+	    					if(y_values[1]+1 <= 20 && board[y_values[2]][x_values[2]] != 1 && board[y_values[1]+1][x_values[1]] != 1 && board[y_values[1]+1][x_values[2]] != 1) {
 	    						if (rotationNum == 1) {
 	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[1]][x_values[2]] = 0;
-	    							board[y_values[3]][x_values[2]] = 0;
-	    							board[y_values[2]][x_values[1]] = 2;
-	    							board[y_values[2]][x_values[2]-1] = 2;
-	    							board[y_values[3]][x_values[1]] = 2;
+	    							board[y_values[1]][x_values[3]] = 0;
+	    							board[y_values[2]][x_values[1]] = 0;
+	    							board[y_values[2]][x_values[2]] = 2;
+	    							board[y_values[1]+1][x_values[1]] = 2;
+	    							board[y_values[1]+1][x_values[2]] = 2;
 	    							rotationNum++;
 	    						}
 	    					}
-	    					if(y_values[2]-1 >= 0 && board[y_values[1]][x_values[2]] != 1 && board[y_values[1]][x_values[3]] != 1 && board[y_values[2]-1][x_values[3]] != 1) {
+	    					if(y_values[2]-1 >= 0 && board[y_values[1]][x_values[3]] != 1 && board[y_values[2]-1][x_values[3]] != 1 && board[y_values[2]-1][x_values[1]] != 1) {
 	    						if (rotationNum == 3) {
 	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[3]][x_values[1]] = 0;
-	    							board[y_values[3]][x_values[2]] = 0;
-	    							board[y_values[2]][x_values[2]] = 2;
-	    							board[y_values[1]][x_values[2]] = 2;
-	    							board[y_values[2]][x_values[1]+1] = 2;
+	    							board[y_values[2]][x_values[2]] = 0;
+	    							board[y_values[2]][x_values[1]] = 0;
+	    							board[y_values[1]][x_values[3]] = 2;
+	    							board[y_values[2]-1][x_values[3]] = 2;
+	    							board[y_values[2]-1][x_values[1]] = 2;
 	    							rotationNum++;
 	    						}
 	    					}
 	    					break;
 	    					
 	    				case('J'):
-	    					if(y_values[1]+1 <= 20 && board[y_values[2]][x_values[2]] != 1 && board[y_values[1]+1][x_values[2]]!= 1 && board[y_values[1]+1][x_values[3]] != 1) {
+	    					if(y_values[1]+1 <= 9 && board[y_values[2]][x_values[1]] != 1 && board[y_values[1]+1][x_values[2]]!= 1 && board[y_values[2]][x_values[2]] != 1) {
 	    						if (rotationNum == 1) {
 	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[3]][x_values[1]] = 0;
-	    							board[y_values[3]][x_values[2]] = 0;
-	    							board[y_values[2]][x_values[1]-1] = 2;
-	    							board[y_values[3]][x_values[1]-1] = 2;
+	    							board[y_values[1]][x_values[3]] = 0;
+	    							board[y_values[2]][x_values[3]] = 0;
+	    							board[y_values[2]][x_values[1]] = 2;
+	    							board[y_values[1]+1][x_values[2]] = 2;
 	    							board[y_values[2]][x_values[2]] = 2;
     								rotationNum++;
 	    						}
 	    					}
-	    					if(y_values[2]-1 >= 0 && board[y_values[1]][x_values[2]] != 1 && board[y_values[2]-1][x_values[2]] != 1 && board[y_values[2]-1][x_values[1]] != 1) {
+	    					if(y_values[2]-1 >= 0 && board[y_values[1]][x_values[3]] != 1 && board[y_values[2]-1][x_values[2]] != 1 && board[y_values[1]][x_values[2]] != 1) {
 	    						if (rotationNum == 3) {
 	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[1]][x_values[2]] = 0;
-	    							board[y_values[3]][x_values[1]] = 0;
-	    							board[y_values[2]][x_values[2]] = 2;
-	    							board[y_values[2]][x_values[1]+1] = 2;
-	    							board[y_values[1]][x_values[1]+1] = 2;
+	    							board[y_values[2]][x_values[1]] = 0;
+	    							board[y_values[2]][x_values[3]] = 0;
+	    							board[y_values[1]][x_values[3]] = 2;
+	    							board[y_values[2]-1][x_values[2]] = 2;
+	    							board[y_values[1]][x_values[2]] = 2;
 	    							rotationNum++;
 	    						}
 	    					}
@@ -911,17 +907,17 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    			switch(type) {
 	    				
     					case('T'):
-    						if(x_values[1]+1 <= 9 && board[y_values[2]][x_values[1]+1]!=1) {
+    						if(x_values[1]-1 >= 0 && board[y_values[2]][x_values[1]-1]!=1) {
     							if (rotationNum == 2) {
-    								board[y_values[2]][x_values[3]] = 0;
-	    							board[y_values[2]-1][x_values[1]] = 2;
+    								board[y_values[3]][x_values[1]] = 0;
+    								board[y_values[2]][x_values[1]-1] = 2;
     								rotationNum++;
     							}
     						}
-    						if(x_values[1]-1 >= 0 && board[y_values[2]][x_values[1]-1]!=1) {
+    						if(x_values[1]+1 <= 9 && board[y_values[2]][x_values[1]+1]!=1) {
     							if (rotationNum == 4) {
     								board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[1]+1][x_values[2]] = 2;
+    								board[y_values[2]][x_values[1]+1] = 2;
     								rotationNum = 1;
     							}
     						}
@@ -929,94 +925,92 @@ public class TetrisGame extends JPanel implements ActionListener{
     						break;
     						
     					case('S'):
-    						if(x_values[1]+1 <= 9 && board[y_values[1]][x_values[2]] != 1 && board[y_values[2]][x_values[1]+1] != 1) {
+    						if(x_values[2]-1 >= 0 && board[y_values[1]][x_values[2]] != 1 && board[y_values[1]][x_values[2]-1] != 1) {
     							if (rotationNum == 2) {
     								board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[1]][x_values[2]] = 0;
-	    							board[y_values[1]][x_values[3]] = 2;
-	    							board[y_values[2]-1][x_values[1]] = 2;
+	    							board[y_values[3]][x_values[2]] = 0;
+	    							board[y_values[1]][x_values[2]] = 2;
+	    							board[y_values[1]][x_values[2]-1] = 2;
     								rotationNum++;
     							}
     						}
-    						if(x_values[2]-1 >= 0 && board[y_values[2]][x_values[2]-1] != 1 && board[y_values[3]][x_values[1]] != 1) {
+    						if(x_values[1]+1 <= 9 && board[y_values[3]][x_values[1]+1] != 1 && board[y_values[3]][x_values[1]] != 1) {
     							if (rotationNum == 4) {
-    								board[y_values[2]][x_values[1]] = 0;
-	    							board[y_values[2]][x_values[3]] = 0;
-	    							board[y_values[2]][x_values[2]] = 2;
-	    							board[y_values[1]+1][x_values[1]] = 2;
+    								board[y_values[1]][x_values[1]] = 0;
+	    							board[y_values[3]][x_values[2]] = 0;
+	    							board[y_values[3]][x_values[1]] = 2;
+	    							board[y_values[3]][x_values[1]+1] = 2;
     								rotationNum = 1;
     							}
     						}
     						break;
     							
     					case('Z'):
-    						if(x_values[2]+1 <= 9 && board[y_values[1]][x_values[2]+1] != 1 && board[y_values[1]][x_values[2]] != 1) {
+    						if(x_values[1]-1 >= 0 && board[y_values[2]][x_values[1]-1] != 1 && board[y_values[1]][x_values[2]] != 1) {
     							if (rotationNum == 2) {
-	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[2]][x_values[3]] = 0;
-	    							board[y_values[2]][x_values[1]] = 2;
-	    							board[y_values[2]-1][x_values[1]] = 2;
+    								board[y_values[2]][x_values[2]] = 0;
+	    							board[y_values[3]][x_values[2]] = 0;
+	    							board[y_values[2]][x_values[1]-1] = 2;
+	    							board[y_values[1]][x_values[2]] = 2;
     								rotationNum++;
     							}
     						}
-    						if(x_values[1]-1 >= 0 && board[y_values[3]][x_values[1]-1] != 1 && board[y_values[3]][x_values[1]] != 1) {
+    						if(x_values[2]+1 <= 9 && board[y_values[2]][x_values[2]+1] != 1 && board[y_values[3]][x_values[1]] != 1) {
     							if (rotationNum == 4) {
-    								
-	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[2]][x_values[3]] = 0;
-	    							board[y_values[1]][x_values[3]] = 2;
-	    							board[y_values[1]+1][x_values[3]] = 2;
+    								board[y_values[1]][x_values[1]] = 0;
+	    							board[y_values[2]][x_values[1]] = 0;
+	    							board[y_values[2]][x_values[2]+1] = 2;
+	    							board[y_values[3]][x_values[1]] = 2;
     								rotationNum = 1;
     							}
     						}
     						break;
     				
     					case('L'):
-    						if(x_values[1]+1 <= 9 && board[y_values[2]][x_values[2]] != 1 && board[y_values[1]][x_values[2]] != 1 && board[y_values[2]][x_values[1]+1] != 1) {
+    						if(x_values[2]-1 >= 0 && board[y_values[2]][x_values[1]] != 1 && board[y_values[1]][x_values[2]-1] != 1 && board[y_values[2]][x_values[1]-1] != 1) {
     							if (rotationNum == 2) {
-    								
-	    							board[y_values[2]][x_values[2]] = 0;
-	    							board[y_values[2]][x_values[1]] = 0;
-	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[1]][x_values[2]] = 2;
-	    							board[y_values[1]][x_values[3]] = 2;
-	    							board[y_values[2]-1][x_values[3]] = 2;
+    								board[y_values[1]][x_values[1]] = 0;
+	    							board[y_values[1]][x_values[2]] = 0;
+	    							board[y_values[3]][x_values[2]] = 0;
+	    							board[y_values[2]][x_values[1]] = 2;
+	    							board[y_values[1]][x_values[2]-1] = 2;
+	    							board[y_values[2]][x_values[2]-1] = 2;
     								rotationNum++;
     							}
     						}
     						if(x_values[2]-1 >= 0 && board[y_values[2]][x_values[1]] != 1 && board[y_values[2]][x_values[2]-1] != 1 && board[y_values[3]][x_values[1]] != 1) {
     							if (rotationNum == 4) {
-	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[2]][x_values[1]] = 0;
-	    							board[y_values[1]][x_values[3]] = 0;
+    								board[y_values[1]][x_values[1]] = 0;
+	    							board[y_values[3]][x_values[1]] = 0;
+	    							board[y_values[3]][x_values[2]] = 0;
 	    							board[y_values[2]][x_values[2]] = 2;
-	    							board[y_values[2]][x_values[3]] = 2;
-	    							board[y_values[1]+1][x_values[2]] = 2;
+	    							board[y_values[2]][x_values[1]+1] = 2;
+	    							board[y_values[3]][x_values[1]+1] = 2;
     								rotationNum = 1;
     							}
     						}
     						break;
     						
     					case('J'):
-    						if(x_values[1]+1 <= 9 && board[y_values[2]][x_values[2]] != 1 && board[y_values[2]][x_values[1]+1] != 1 && board[y_values[1]][x_values[1]+1] != 1) {
+    						if(x_values[1]-1 >= 0 && board[y_values[1]][x_values[2]] != 1 && board[y_values[2]][x_values[2]] != 1 && board[y_values[2]][x_values[1]-1] != 1) {
     							if (rotationNum == 2) {
     								board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[2]][x_values[1]] = 0;
-	    							board[y_values[2]][x_values[3]] = 0;
+	    							board[y_values[3]][x_values[2]] = 0;
+	    							board[y_values[3]][x_values[1]] = 0;
 	    							board[y_values[1]][x_values[2]] = 2;
-	    							board[y_values[2]-1][x_values[2]] = 2;
-	    							board[y_values[2]-1][x_values[1]] = 2;
+	    							board[y_values[2]][x_values[2]] = 2;
+	    							board[y_values[2]][x_values[1]-1] = 2;
     								rotationNum++;
     							}
     						}
-    						if(x_values[1]-1 >= 0 && board[y_values[2]][x_values[1]-1] != 1 && board[y_values[2]][x_values[2]] != 1 && board[y_values[3]][x_values[1]-1] != 1) {
+    						if(x_values[1]+1 >= 0 && board[y_values[2]][x_values[1]+1] != 1 && board[y_values[2]][x_values[2]] != 1 && board[y_values[2]][x_values[2]] != 1) {
     							if (rotationNum == 4) {
-	    							board[y_values[1]][x_values[1]] = 0;
-	    							board[y_values[1]][x_values[3]] = 0;
-	    							board[y_values[2]][x_values[3]] = 0;
+    								board[y_values[1]][x_values[1]] = 0;
+	    							board[y_values[1]][x_values[2]] = 0;
+	    							board[y_values[3]][x_values[1]] = 0;
+	    							board[y_values[2]][x_values[1]+1] = 2;
+	    							board[y_values[3]][x_values[2]] = 2;
 	    							board[y_values[2]][x_values[2]] = 2;
-	    							board[y_values[1]+1][x_values[2]] = 2;
-	    							board[y_values[1]+1][x_values[3]] = 2;
     								rotationNum = 1;
     							}
     						}
