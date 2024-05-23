@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -14,7 +14,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.*;
-
+import java.util.ArrayList;
+import java.lang.Math;
 public class TetrisGame extends JPanel implements ActionListener{
 	static public int[][] board = {  //Initializes the board's starting state.
 		{0,0,0,0,0,0,0,0,0,0},//21 index 0
@@ -55,6 +56,15 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static int rotationNum = 1; 
 	static boolean gameOver = false;
 	static int killScreenLine = 0; //the line in the kill screen (ending animation)
+	ArrayList<Character> bag = new ArrayList<Character>(); 
+	static Color Z = new Color(207, 54, 22);
+	static Color S = new Color(138, 234, 40);
+	static Color J = new Color(0, 0, 240);
+	static Color L = new Color(221, 164, 34);
+	static Color O = new Color(241, 239, 47);
+	static Color T = new Color(136, 44, 237);
+	static Color I = new Color(0, 240, 240);
+	static Color currColor = new Color(0,0,0);
 	
 	public TetrisGame(){
 		time = 0;
@@ -71,24 +81,53 @@ public class TetrisGame extends JPanel implements ActionListener{
 	public void paintComponent(Graphics g){
 		
 		Graphics2D graphics = (Graphics2D) g;
-	
+		
 		// draw space for game
+		graphics.setColor(Color.BLACK);
+	 	graphics.fillRect(30, 35, 320, 650); 
 		graphics.setColor(Color.WHITE);
-	 	graphics.fillRect(20, 60, 300, 600); 
+	 	graphics.fillRect(40, 75, 300, 600); 
 	 	graphics.setColor(Color.GRAY);
-	 	graphics.fillRect(20, 30, 300, 30);
-	 	graphics.setColor(Color.BLACK);
+	 	graphics.fillRect(40, 45, 300, 30);
+	 	graphics.setColor(currColor);
 	 	
-	    
+	   
 	    //update game state
 	    for (int i = 0; i <= 20; i++) { //Iterates over rows.
 	    	for (int j = 9; j >= 0; j--) { // Iterates over columns
-	    		if ((board[i][j] == 1)||(board[i][j] == 2)) {
-	    			graphics.fillRect(20+30*j, 30+30*i, w, l); //locks the block at (i,j)
+	    		
+	    		if (board[i][j]!=0) {
+	    			switch(abs(board[i][j])) {
+		    		case 1:
+		    			currColor = Color.BLACK;
+		    			break;
+		    		case 2:
+		    			currColor = I;
+		    			break;
+		    		case 3:
+		    			currColor = O;
+		    			break;
+		    		case 4:
+		    			currColor = T;
+		    			break;
+		    		case 5:
+		    			currColor = S;
+		    			break;
+		    		case 6:
+		    			currColor = Z;
+		    			break;
+		    		case 7:
+		    			currColor = L;
+		    			break;
+		    		case 8:
+		    			currColor = J;
+		    			break;
+		    		}
+	    			graphics.fillRect(40+30*j, 45+30*i, w, l); //locks the block at (i,j)
 	    			graphics.setColor(Color.WHITE);
-	    			graphics.fillRect(22+30*j, 32+30*i, w-4, l-4);
-	    			graphics.setColor(Color.BLACK);
-	    			graphics.fillRect(24+30*j, 34+30*i, w-8, l-8);
+	    			graphics.fillRect(41+30*j, 46+30*i, w-2, l-2);
+	    			graphics.setColor(currColor);
+	    			graphics.fillRect(42+30*j, 47+30*i, w-4, l-4);
 	    			
 	    		}
 	    		if(checkLine(i)) {
@@ -116,6 +155,14 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    }
 	}
 	
+	private int abs(int k) {
+		if(k>=0) {
+			return k;
+		}else{
+			return (k-2*k);
+		}
+	}
+
 	public boolean checkLine(int index) { // Checks for filled lines
 		if(gameOver == true) {
 			return(false);
@@ -147,7 +194,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			}
 		}
 	}
-	public static void getBlock() { // Chooses a random block type and then adds it to the board. s
+	public static void getBlock() { // Chooses a random block type and then adds it to the board.
 		if(gameOver == true) {
 			return;
 		}
@@ -156,11 +203,15 @@ public class TetrisGame extends JPanel implements ActionListener{
 		type = blockTypes[r.nextInt(blockTypes.length)]; //r.nextInt(blockTypes.length)
 		
 		switch(type) {
+			case('A'):
+				board[0][5] = -1; // □□□□□■□□□□
+				break;
 			case('I'):
 				board[0][3] = 2; // □□□■■■■□□□
 				board[0][4] = 2; // □□□□□□□□□□
 				board[0][5] = 2;
 				board[0][6] = 2;
+				
 				break;
 			
 			case('O'):
@@ -168,6 +219,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[0][4] = 2; // □□□□■■□□□□
 				board[0][5] = 2;
 				board[1][5] = 2;
+				
 				break;
 				
 			case('T'):
@@ -175,6 +227,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[1][4] = 2; // □□□□■■■□□□
 				board[1][5] = 2;
 				board[1][6] = 2;
+				
 				break;
 				
 			case('S'):
@@ -182,6 +235,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[0][4] = 2; // □□□■■□□□□□
 				board[1][4] = 2;
 				board[1][3] = 2;
+				
 				break;
 			
 			case('Z'):
@@ -189,6 +243,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[1][4] = 2; // □□□□■■□□□□
 				board[0][4] = 2;
 				board[0][3] = 2;
+				
 				break;
 				
 			case('L'):
@@ -196,6 +251,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[1][3] = 2; // □□□■■■□□□□
 				board[1][4] = 2;
 				board[1][5] = 2;
+				
 				break;
 				
 			case('J'):
@@ -203,10 +259,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[1][3] = 2; // □□□■■■□□□□
 				board[1][4] = 2;
 				board[1][5] = 2;
-				break;
-				
-			case('A'):
-				board[0][5] = 2; // □□□□□■□□□□
 		}
 		
 	}
@@ -888,7 +940,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		game.setBackground(bg);
 		
 		//window settings
-		window.setBounds(350, 150, 650, 750); //size
+		window.setBounds(350, 150, 650, 800); //size
 		window.setResizable(false); //no resize
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //close
 		window.setVisible(true); //visibility
