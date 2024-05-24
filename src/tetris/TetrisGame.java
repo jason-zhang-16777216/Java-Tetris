@@ -38,9 +38,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 		{0,0,0,0,0,0,0,0,0,0},//2  index 19
 		{0,0,0,0,0,0,0,0,0,0} //1  index 20 
 	};
+	Timer clock = new Timer(); // Time handling. 
 	static int time;
 	static int fallTime;
-	Timer clock = new Timer();
 	static int lockTime;
 	static int w = 30; //Width and length. 
 	static int l = 30;
