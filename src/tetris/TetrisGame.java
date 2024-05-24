@@ -233,21 +233,25 @@ public class TetrisGame extends JPanel implements ActionListener{
 		rotationNum = 1;
 		oppo_rotationNum = 1; 
 		boolean buddyMode = false;
-		char[] blockTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L', 'J'}; 
-		if(bag.isEmpty()) {
+		char[] buddyTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L', 'J'}; 
+		char[] blockTypes = {'I', 'O', 'T', 'S', 'Z', 'L', 'J'}; 
+		if(bag.isEmpty() && ! buddyMode) {
 			for (char block : blockTypes) {
 	            bag.add(block);
 	            System.out.println(bag);
 	        }
 		} 
+		else if(bag.isEmpty() && buddyMode) {
+			for (char block : buddyTypes) {
+	            bag.add(block);
+	            System.out.println(bag);
+			}
+		}
 		
 		bagRandom = r.nextInt(0,bag.size());
-		if(bag.get(bagRandom) == 'A' && buddyMode == false) {
-			bag.remove(bagRandom);
-			bagRandom = r.nextInt(0,bag.size());
-		}
 		type = bag.get(bagRandom);
 		bag.remove(bagRandom);
+		
 
 		
 		//type = blockTypes[r.nextInt(blockTypes.length)]; //r.nextInt(blockTypes.length)
@@ -479,7 +483,9 @@ public class TetrisGame extends JPanel implements ActionListener{
     		}
 	    		
 	    	
-	    	// drop	
+    		else if ((e.getKeyCode() == KeyEvent.VK_UP)){
+    			
+    		}
     		else if ((e.getKeyCode() == KeyEvent.VK_S)||(e.getKeyCode() == KeyEvent.VK_DOWN)) {
 
 	    		int d = 0; //distance to move block down by
