@@ -238,13 +238,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 		if(bag.isEmpty() && ! buddyMode) {
 			for (char block : blockTypes) {
 	            bag.add(block);
-	            System.out.println(bag);
 	        }
 		} 
 		else if(bag.isEmpty() && buddyMode) {
 			for (char block : buddyTypes) {
 	            bag.add(block);
-	            System.out.println(bag);
 			}
 		}
 		
