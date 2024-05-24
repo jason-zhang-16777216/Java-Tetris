@@ -377,7 +377,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 				    	catch (ArrayIndexOutOfBoundsException ex) { //if block is at bottom (index out of range)
 				    		checkReachBottom();
 				    	}
-		    			
 		    		}
 		    	}
 			}
@@ -387,10 +386,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	
 	public static final class KeyHandling implements KeyListener{
 		
-		@Override
+		@Override //movements based on key presses
 		public void keyPressed(KeyEvent e) {
-			
-			//movements based on key presses
 	    	
 			//left
     		if ((e.getKeyCode() == KeyEvent.VK_A) || (e.getKeyCode() == KeyEvent.VK_LEFT)) {
@@ -1205,7 +1202,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 				x_values = newArray;
 				y_values = newArray;
 	    	}
-	    
 	    }
 
 		@Override
@@ -1213,14 +1209,12 @@ public class TetrisGame extends JPanel implements ActionListener{
 			// TODO Auto-generated method stub
 			
 		}
-
 		@Override
 		public void keyReleased(KeyEvent e) {
 			//transform back when key released
 			
 		}
 	}
-	
 	//main function
 	public static void main(String[] args) {
 
