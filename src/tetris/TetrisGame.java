@@ -38,17 +38,17 @@ public class TetrisGame extends JPanel implements ActionListener{
 		{0,0,0,0,0,0,0,0,0,0},//2  index 19
 		{0,0,0,0,0,0,0,0,0,0} //1  index 20 
 	};
+	static Random r = new Random(); //RNG object. 
 	Timer clock = new Timer(); // Time handling. 
 	static int time;
 	static int fallTime;
 	static int lockTime;
-	static int w = 30; //Width and length. 
-	static int l = 30;
-	static int score = 0;
+	static int w = 28; //Width and height. 
+	static int h = 28;
+	static int score = 0; // Score == Lines cleared × 10.
 	static KeyHandling kHandle = new KeyHandling();//Key-press detection. 
-	static Random r = new Random();
-	static char type; //type of block
-	static int check = 1; //make sure soft drop lock fallTime is consistent
+	static char type; //Type of block. (A, I, O, T, S, Z, L, J).
+	static boolean blockChecked = false; //make sure soft drop lock fallTime is consistent
 	static int[] x_values = {100}; //all x values of block
 	static int[] y_values = {100}; //all y values of block
 	static int rotationNum = 1; 
@@ -84,9 +84,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 		
 		// draw space for game
 		graphics.setColor(Color.BLACK);
-	 	graphics.fillRect(30, 45, 320, 650); 
+	 	graphics.fillRect(30, 45, 10*w+20, 22*h-2); 
 		graphics.setColor(Color.WHITE);
-	 	graphics.fillRect(40, 85, 300, 600); 
+	 	graphics.fillRect(40, 85, 10*w, 20*h-2); 
 	 	graphics.setColor(Color.GRAY);
 	   
 	    //update game state
@@ -120,13 +120,13 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    			currColor = J;
 		    			break;
 		    		}
-	    			graphics.fillRect(40, 55, 300, 30);
+	    			graphics.fillRect(40, 55, 280, 28);
 	    		 	graphics.setColor(currColor);
-	    			graphics.fillRect(40+30*j, 55+30*i, w, l); //locks the block at (i,j)
+	    			graphics.fillRect(40+w*j, 55+h*i, w, h); //locks the block at (i,j)
 	    			graphics.setColor(Color.WHITE);
-	    			graphics.fillRect(41+30*j, 56+30*i, w-2, l-2);
+	    			graphics.fillRect(41+w*j, 56+h*i, w-2, h-2);
 	    			graphics.setColor(currColor);
-	    			graphics.fillRect(42+30*j, 57+30*i, w-4, l-4);
+	    			graphics.fillRect(42+w*j, 57+h*i, w-4, h-4);
 	    			
 	    		}
 	   		if(checkLine(i)) {
@@ -320,9 +320,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 				
 				if ((board[i][j] < 0  && board[i + 1][j] > 0) || (board[20][j] < 0  && i == 0)) { //if block is stacking on a locked block or at the bottom
 			    	
-					if (check == 1) { //make sure soft drop lock fallTime is consistent
+					if (blockChecked == false) { //make sure soft drop lock fallTime is consistent
 						lockTime++;
-						check ++;
+						blockChecked = true;
 					}
 			    	if (lockTime % 50 == 0) {
 			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
@@ -341,7 +341,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			    } 			
 			}
 		}
-		check = 1;
+		blockChecked = false;
 		
 	}
 	public static boolean checkComplexShape(int j, int i) { //check if shape is complex
@@ -1231,7 +1231,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		game.setBackground(bg);
 		
 		//window settings
-		window.setBounds(200, 100, 900, 800); //size
+		window.setBounds(200, 100, 900, 720); //size
 		window.setResizable(false); //no resize
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //close
 		window.setVisible(true); //visibility
