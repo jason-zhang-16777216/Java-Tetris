@@ -56,6 +56,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static boolean gameOver = false;
 	static int killScreenLine = 0; //the line in the kill screen (ending animation)
 	static ArrayList<Character> bag = new ArrayList<Character>(); 
+	static int bagIndex;
 	static Color Z = new Color(207, 54, 22);
 	static Color S = new Color(138, 234, 40);
 	static Color J = new Color(0, 0, 240);
@@ -232,9 +233,22 @@ public class TetrisGame extends JPanel implements ActionListener{
 		rotationNum = 1;
 		oppo_rotationNum = 1; 
 		char[] blockTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L','J'}; 
-		if(bag.isEmpty()) {
-			Collections.addAll(Arrays.asList(bag),(blockTypes));
-		}
+		/*if(bag.isEmpty()) {
+			for(var i = 0; i < blockTypes.length;i++) {
+				bag.add(blockTypes[i]);
+			}
+			for(var i = 0; i < blockTypes.length;i++) {
+				System.out.print(bag.get(bagIndex) + " ");
+			}
+			
+		} else {
+			bagIndex = r.nextInt(0,bag.size());
+			type = bag.get(bagIndex);
+			bag.remove(bagIndex);
+			for(var i = 0; i < blockTypes.length;i++) {
+				System.out.print(bag.get(bagIndex) + " ");
+			}
+		}*/
 		type = blockTypes[r.nextInt(blockTypes.length)]; //r.nextInt(blockTypes.length)
 		
 		switch(type) {
