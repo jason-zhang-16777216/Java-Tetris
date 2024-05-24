@@ -13,6 +13,7 @@ import java.awt.Graphics2D;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.lang.Math;
+import java.util.Collections;
 public class TetrisGame extends JPanel implements ActionListener{
 	static public int[][] board = {  //Initializes the board's starting state.
 		{0,0,0,0,0,0,0,0,0,0},//21 index 0
@@ -54,7 +55,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static int oppo_rotationNum = 1;
 	static boolean gameOver = false;
 	static int killScreenLine = 0; //the line in the kill screen (ending animation)
-	ArrayList<Character> bag = new ArrayList<Character>(); 
+	static ArrayList<Character> bag = new ArrayList<Character>(); 
 	static Color Z = new Color(207, 54, 22);
 	static Color S = new Color(138, 234, 40);
 	static Color J = new Color(0, 0, 240);
@@ -231,6 +232,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 		rotationNum = 1;
 		oppo_rotationNum = 1; 
 		char[] blockTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L','J'}; 
+		if(bag.isEmpty()) {
+			Collections.addAll(Arrays.asList(bag),(blockTypes));
+		}
 		type = blockTypes[r.nextInt(blockTypes.length)]; //r.nextInt(blockTypes.length)
 		
 		switch(type) {
@@ -504,6 +508,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    			
     		// rotation counterclockwise (helllllllllp)
 	    	else if ((e.getKeyCode() == KeyEvent.VK_Z) || (e.getKeyCode() == KeyEvent.VK_W)) {
+	    		
 	    		boolean testx = true;
 	    		boolean testy = true;
 	    		for (int i = 20; i >= 0; i--) { 
@@ -540,6 +545,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    			}
 	    		}
 	    		if (x_values.length == 4) {
+	    			
 	    			switch(type) {
 	    				case('T'):
 	    					if(y_values[1]+1 <= 20 && board[y_values[1]+1][x_values[2]] <= 0) {
@@ -786,6 +792,7 @@ public class TetrisGame extends JPanel implements ActionListener{
     						break;
 	    			}
 	    		}
+		    		
 	    		else if (x_values.length == 5) {
 	    			if (y_values[1]-2 >= 0 && y_values[1]-1 >= 0 && y_values[1]+1 <= 20 && board[y_values[1]-2][x_values[3]] <= 0 && board[y_values[1]-1][x_values[3]] <= 0 && board[y_values[1]+1][x_values[3]] <= 0) {
 	    				if (oppo_rotationNum == 1) {
