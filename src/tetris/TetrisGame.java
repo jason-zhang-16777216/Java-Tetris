@@ -4,7 +4,10 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.awt.Color;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Container;
 import java.awt.Font;
@@ -65,6 +68,14 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static Color T = new Color(136, 44, 237);
 	static Color I = new Color(0, 240, 240);
 	static Color currColor = new Color(0,0,0);
+	
+	/*
+	 * little buddy is the single block, and it is not commonly included in Tetris
+	 * if little buddy disrupts Tetris' normal game play
+	 * we decided for the users to determine whether they want the single block present in their game
+	*/
+	static boolean buddyMode = false; // later on add JButton for user to control whether little buddy appears of not
+	
 	
 	public TetrisGame(){
 		time = 0;
@@ -160,6 +171,35 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    graphics.setColor(Color.BLACK);
 	    graphics.drawString("TIME: " + time/100, 400, 175); //draw text
 	    
+	    // check if little buddy more is on and inform user
+	    if(buddyMode) {
+	    	// print buddy statement
+	    	graphics.setFont(new Font("Arial", Font.PLAIN, 20));
+		    graphics.setColor(Color.WHITE);
+		    for (int xo = -1; xo <= 1; xo++) {
+	            for (int yo = -1; yo <= 1; yo++) {
+	                if (xo != 0 || yo != 0) {
+	                	graphics.drawString("Buddy Mode Enabled (press return to turn off)", 400 + xo, 650 + yo);//outline
+	                }
+	            }
+	        }
+		    graphics.setColor(Color.BLACK);
+		    graphics.drawString("Buddy Mode Enabled (press return to turn off)", 400, 650); //draw text
+	    }
+	    else {
+	    	// print buddy statement
+	    	graphics.setFont(new Font("Arial", Font.PLAIN, 20));
+		    graphics.setColor(Color.WHITE);
+		    for (int xo = -1; xo <= 1; xo++) {
+	            for (int yo = -1; yo <= 1; yo++) {
+	                if (xo != 0 || yo != 0) {
+	                	graphics.drawString("Buddy Mode Not Enabled (press return to turn on)", 400 + xo, 650 + yo);//outline
+	                }
+	            }
+	        }
+		    graphics.setColor(Color.BLACK);
+		    graphics.drawString("Buddy Mode Not Enabled (press return to turn on)", 400, 650); //draw text
+	    }
 	    
 	    //prints game over animation
 	    if(gameOver == true) {
@@ -174,20 +214,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		if(killScreenLine < 20) {
 	    			killScreenLine++;
 	    		}else{
-					
-					// print GAME OVER
-					graphics.setFont(new Font("Arial", Font.BOLD, 100));
-					graphics.setColor(Color.WHITE);
-					System.out.println("hello");
-				    for (int xo = -2; xo <= 2; xo++) {
-			            for (int yo = -2; yo <= 2; yo++) {
-			                if (xo != 0 || yo != 0) {
-			                	graphics.drawString("GAME OVER", 100 + xo, 350 + yo);//outline
-			                }
-			            }
-			        }
-				    graphics.setColor(Color.RED);
-				    graphics.drawString("GAME OVER", 100, 350); 
 	    			clock.cancel();  		
 	    		}
 	    	}
@@ -231,10 +257,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 		}
 		rotationNum = 1;
 		oppo_rotationNum = 1; 
-		boolean buddyMode = false; // later on add JButton for user to control whether little buddy appears of not
-		//little buddy disrupts normal tetris game play, so it'd just be a fun addition
 		char[] buddyTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L', 'J'}; 
 		char[] blockTypes = {'I', 'O', 'T', 'S', 'Z', 'L', 'J'}; 
+		
 		if(bag.isEmpty() && ! buddyMode) {
 			for (char block : blockTypes) {
 	            bag.add(block);
@@ -387,6 +412,16 @@ public class TetrisGame extends JPanel implements ActionListener{
 		@Override //movements based on key presses
 		public void keyPressed(KeyEvent e) {
 	    	
+			// add little buddy
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				if (buddyMode) {
+					buddyMode = false;
+				}
+				else {
+					buddyMode = true;
+				}
+			}
+			
 			//left
     		if ((e.getKeyCode() == KeyEvent.VK_A) || (e.getKeyCode() == KeyEvent.VK_LEFT)) {
     			int testLl = 0;
