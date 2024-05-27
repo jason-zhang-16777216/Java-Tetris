@@ -68,6 +68,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static Color T = new Color(136, 44, 237);
 	static Color I = new Color(0, 240, 240);
 	static Color currColor = new Color(0,0,0);
+	static boolean hard = false;
 	
 	/*
 	 * little buddy is the single block, and it is not commonly included in Tetris
@@ -98,10 +99,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 	 	graphics.fillRect(30, 45, 10*w+20, 22*h-2); 
 		graphics.setColor(Color.WHITE);
 	 	graphics.fillRect(40, 85, 10*w, 20*h-2); 
-	 	graphics.setColor(Color.GRAY);
-	   
+	 	graphics.setColor(currColor);
+	 	graphics.fillRect(40, 55, 280, 28);
 	    //update game state
 	    for (int i = 20; i >=0 ; i--) { //Iterates over rows.
+	    	
 	    	for (int j = 9; j >= 0; j--) { // Iterates over columns
 	    		
 	    		if (board[i][j]!=0) {
@@ -131,20 +133,27 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    			currColor = J;
 		    			break;
 		    		}
-	    			graphics.fillRect(40, 55, 280, 28);
+	    			
 	    		 	graphics.setColor(currColor);
-	    			graphics.fillRect(40+w*j, 55+h*i, w, h); //locks the block at (i,j)
+	    		 	graphics.fillRect(40+w*j, 55+h*i, w, h); //locks the block at (i,j)
 	    			graphics.setColor(Color.WHITE);
-	    			graphics.fillRect(41+w*j, 56+h*i, w-2, h-2);
+	    		 	graphics.fillRect(41+w*j, 56+h*i, w-2, h-2);
 	    			graphics.setColor(currColor);
 	    			graphics.fillRect(42+w*j, 57+h*i, w-4, h-4);
-	    			
+
 	    		}
-	   		if(checkLine(i)) {
-	    		clearLine(i);
+	    		
+		   		if(checkLine(i)) {
+		    		clearLine(i);
+		    	}
 	    	}
-	    	}
+	    	
 		}
+	    //Queue
+    	for (int i = 0 ;i < 5;i++) {
+    		//graphics.setColor(Color.LIGHT_GRAY);
+    		//graphics.fillRect(35, 30, 50, 30);
+    	}
 	    
 	    // print score
 	    graphics.setColor(Color.WHITE);
@@ -279,9 +288,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 		
 		//type = blockTypes[r.nextInt(blockTypes.length)]; //r.nextInt(blockTypes.length)
 		
-		switch(type) {
+		switch(type) { ///////// Magnitude controls color, parity controls locked-ness.
 			case('A'):
-				board[0][5] = -1; // □□□□□■□□□□
+				board[0][5] = -1; // □□□□□■□□□□ 
 				break;
 			case('I'):
 				board[0][3] = -2; // □□□■■■■□□□
@@ -349,7 +358,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 						lockTime++;
 						blockChecked = true;
 					}
-			    	if (lockTime % 50 == 0) {
+			    	if ((lockTime % 50 == 0)||(hard)) {
 			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
 			    			for (int jj = 9; jj >= 0; jj--) { // Iterates over columns (right to left)
 			    				if (board[ii][jj] < 0 ) {
@@ -363,11 +372,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 			    	    lockTime = 1;
 			    	    		
 			    	}
-			    } 			
+			    } 	
 			}
 		}
 		blockChecked = false;
-		
+		hard = false;
 	}
 	public static boolean checkComplexShape(int j, int i) { //check if shape is complex
 		//check if current block is surrounded by any unlocked block
@@ -378,7 +387,45 @@ public class TetrisGame extends JPanel implements ActionListener{
 		}
 		return false;
 	}
-	
+	public static void down() {
+		int d = 0; //distance to move block down by
+		int all_d[] = {100};
+		for (int i = 20; i >= 0; i--) { //Iterates over rows (bottom to top)
+			for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
+					
+				if (board[i][j] < 0 ) { //find the distance from movable block to nearest locked in block below
+					for (int ii = i+1; ii < 21 && board[ii][j] <= 0 && board[i+1][j] <= 0; ii++) { 
+						d++;
+					}
+					// add distance to list 
+					int[] newArray = Arrays.copyOf(all_d, all_d.length + 1);
+					newArray[newArray.length - 1] = d;
+				    all_d = newArray;
+				    d = 0;
+				}
+			}
+		}
+			
+		// find the smallest value in the list of distances
+		int min = all_d[0];
+		for(int i=0; i<all_d.length; i++) { 
+		    if(min > all_d[i]){
+		        min = all_d[i];
+		    }
+		}
+		// move all movable blocks down by min
+		for (int i = 20; i >= 0; i--) { 
+			for (int j = 9; j >= 0; j--) {
+				if (board[i][j] < 0 ) {
+					board[i+min][j] = board[i][j];
+					if (min != 0) {
+						board[i][j] = 0;
+					}
+					fallTime = 1;
+				}
+			}
+		}
+	}
 	public void actionPerformed(ActionEvent e) {
 		fallTime ++;
 		time++;	
@@ -514,47 +561,12 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		
 	    	
     		else if ((e.getKeyCode() == KeyEvent.VK_UP)){
-    			
+    			down();
+    			hard = true;
     		}
     		else if ((e.getKeyCode() == KeyEvent.VK_S)||(e.getKeyCode() == KeyEvent.VK_DOWN)) {
-
-	    		int d = 0; //distance to move block down by
-	    		int all_d[] = {100};
-	    		for (int i = 20; i >= 0; i--) { //Iterates over rows (bottom to top)
-	    			for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
-	    					
-	    				if (board[i][j] < 0 ) { //find the distance from movable block to nearest locked in block below
-	    					for (int ii = i+1; ii < 21 && board[ii][j] <= 0 && board[i+1][j] <= 0; ii++) { 
-	    						d++;
-	    					}
-	    					// add distance to list 
-	    					int[] newArray = Arrays.copyOf(all_d, all_d.length + 1);
-	    					newArray[newArray.length - 1] = d;
-	    				    all_d = newArray;
-	    				    d = 0;
-	    				}
-	    			}
-	    		}
-	    			
-	    		// find the smallest value in the list of distances
-	    		int min = all_d[0];
-	    		for(int i=0; i<all_d.length; i++) { 
-	    		    if(min > all_d[i]){
-	    		        min = all_d[i];
-	    		    }
-	    		}
-	    		// move all movable blocks down by min
-	    		for (int i = 20; i >= 0; i--) { 
-	    			for (int j = 9; j >= 0; j--) {
-	    				if (board[i][j] < 0 ) {
-	    					board[i+min][j] = board[i][j];
-	    					if (min != 0) {
-	    						board[i][j] = 0;
-	    					}
-	    					fallTime = 1;
-	    				}
-	    			}
-	    		}
+    			down();
+	    		
 	    	}
 	    			
     		// rotation counterclockwise (helllllllllp)
