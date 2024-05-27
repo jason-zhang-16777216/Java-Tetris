@@ -560,7 +560,7 @@ public class TetrisGame extends JPanel implements ActionListener{
     		}
 	    		
 	    	
-    		else if ((e.getKeyCode() == KeyEvent.VK_UP)){
+    		else if ((e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_SPACE)){
     			down();
     			hard = true;
     		}
