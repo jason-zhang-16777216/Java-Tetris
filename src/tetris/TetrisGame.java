@@ -103,9 +103,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 	 	graphics.fillRect(40, 55, 280, 28);
 	    //update game state
 	    for (int i = 20; i >=0 ; i--) { //Iterates over rows.
-	    	
+	    	graphics.setColor(Color.LIGHT_GRAY);
+	    	graphics.fillRect(40, 55+h*i, 10*w, 1); //Horizontal grid rows. 
 	    	for (int j = 9; j >= 0; j--) { // Iterates over columns
-	    		
+	    		graphics.fillRect(40+w*j, 57+h, 1, 20*h-2);
 	    		if (board[i][j]!=0) {
 	    			switch(Math.abs(board[i][j])) {
 		    		case 1:
@@ -151,8 +152,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 		}
 	    //Queue
     	for (int i = 0 ;i < 5;i++) {
-    		//graphics.setColor(Color.LIGHT_GRAY);
-    		//graphics.fillRect(35, 30, 50, 30);
+    		graphics.setColor(Color.LIGHT_GRAY);
+    		graphics.fillRect(350, 30+90*i, 160, 90);
     	}
 	    
 	    // print score
