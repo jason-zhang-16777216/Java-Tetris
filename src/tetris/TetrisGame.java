@@ -4,7 +4,6 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.awt.Color;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -41,25 +40,39 @@ public class TetrisGame extends JPanel implements ActionListener{
 		{0,0,0,0,0,0,0,0,0,0},//2  index 19
 		{0,0,0,0,0,0,0,0,0,0} //1  index 20 
 	};
+	
 	static Random r = new Random(); //RNG object. 
-	Timer clock = new Timer(); // Time handling. 
+	
+	// Time handlings
+	Timer clock = new Timer();  
 	static int time;
 	static int fallTime;
 	static int lockTime;
+	
+	//block basics
 	static int w = 28; //Width and height. 
 	static int h = 28;
 	static int score = 0; // Score == Lines cleared × 10.
-	static KeyHandling kHandle = new KeyHandling();//Key-press detection. 
 	static char type; //Type of block. (A, I, O, T, S, Z, L, J).
 	static boolean blockChecked = false; //make sure soft drop lock fallTime is consistent
+	
+	static KeyHandling kHandle = new KeyHandling();//Key-press detection. 
+	
+	//rotation settings
 	static int[] x_values = {100}; //all x values of block
 	static int[] y_values = {100}; //all y values of block
 	static int rotationNum = 1; 
 	static int oppo_rotationNum = 1;
+	
+	// gameover handlings (i.e. animations)
 	static boolean gameOver = false;
 	static int killScreenLine = 0; //the line in the kill screen (ending animation)
+	
+	//bag randomizer
 	static ArrayList<Character> bag = new ArrayList<Character>(); 
 	static int bagRandom = 0;
+
+	//colors
 	static Color Z = new Color(207, 54, 22);
 	static Color S = new Color(138, 234, 40);
 	static Color J = new Color(0, 0, 240);
@@ -68,7 +81,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static Color T = new Color(136, 44, 237);
 	static Color I = new Color(0, 240, 240);
 	static Color currColor = new Color(0,0,0);
-	static boolean hard = false;
+	
+	static boolean hard = false; //hard drop
 	
 	/*
 	 * little buddy is the single block, and it is not commonly included in Tetris
@@ -77,11 +91,12 @@ public class TetrisGame extends JPanel implements ActionListener{
 	*/
 	static boolean buddyMode = false; // later on add JButton for user to control whether little buddy appears of not
 	
-	
+	//constructor
 	public TetrisGame(){
 		time = 0;
 		fallTime = 1;
 		lockTime = 1;
+		
 		clock.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				actionPerformed(null);
@@ -432,6 +447,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		time++;	
 		checkReachBottom();
 		
+		
 		//block moves down slowly
 		if (fallTime % 50 == 0) {
 
@@ -452,16 +468,17 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    	}
 			}
 		}
+		
 		repaint();
 	}
 	
 	public static final class KeyHandling implements KeyListener{
 		
 		@Override //movements based on key presses
-		public void keyPressed(KeyEvent e) {
+		public void keyPressed(KeyEvent event) {
 	    	
 			// add little buddy
-			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			if (event.getKeyCode() == KeyEvent.VK_ENTER) {
 				if (buddyMode) {
 					buddyMode = false;
 				}
@@ -471,7 +488,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			}
 			
 			//left
-    		if ((e.getKeyCode() == KeyEvent.VK_A) || (e.getKeyCode() == KeyEvent.VK_LEFT)) {
+    		if ((event.getKeyCode() == KeyEvent.VK_A) || (event.getKeyCode() == KeyEvent.VK_LEFT)) {
     			int testLl = 0;
     			for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
     				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
@@ -517,7 +534,7 @@ public class TetrisGame extends JPanel implements ActionListener{
     		}
 	    	
     		//right
-    		else if ((e.getKeyCode() == KeyEvent.VK_D)||(e.getKeyCode() == KeyEvent.VK_RIGHT)) {
+    		else if ((event.getKeyCode() == KeyEvent.VK_D)||(event.getKeyCode() == KeyEvent.VK_RIGHT)) {
 	    		int testRr = 0;
 	    		for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
 	    			for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
@@ -561,17 +578,17 @@ public class TetrisGame extends JPanel implements ActionListener{
     		}
 	    		
 	    	
-    		else if ((e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_SPACE)){
+    		else if ((event.getKeyCode() == KeyEvent.VK_UP) || (event.getKeyCode() == KeyEvent.VK_SPACE)){
     			down();
     			hard = true;
     		}
-    		else if ((e.getKeyCode() == KeyEvent.VK_S)||(e.getKeyCode() == KeyEvent.VK_DOWN)) {
+    		else if ((event.getKeyCode() == KeyEvent.VK_S)||(event.getKeyCode() == KeyEvent.VK_DOWN)) {
     			down();
 	    		
 	    	}
 	    			
     		// rotation counterclockwise (helllllllllp)
-	    	else if ((e.getKeyCode() == KeyEvent.VK_Z) || (e.getKeyCode() == KeyEvent.VK_W)) {
+	    	else if ((event.getKeyCode() == KeyEvent.VK_Z) || (event.getKeyCode() == KeyEvent.VK_W)) {
 	    		
 	    		boolean testx = true;
 	    		boolean testy = true;
@@ -912,7 +929,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    	}
 	    	
 	    	// rotation clockwise (helllllllllp)
-	    	else if ((e.getKeyCode() == KeyEvent.VK_X) || (e.getKeyCode() == KeyEvent.VK_E)) {
+	    	else if ((event.getKeyCode() == KeyEvent.VK_X) || (event.getKeyCode() == KeyEvent.VK_E)) {
 	    		boolean testx = true;
 	    		boolean testy = true;
 	    		for (int i = 20; i >= 0; i--) { 
@@ -1253,16 +1270,14 @@ public class TetrisGame extends JPanel implements ActionListener{
 		@Override
 		public void keyTyped(KeyEvent e) {
 			// TODO Auto-generated method stub
-			
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
 			//transform back when key released
-			
 		}
 	}
 	//main function
-	public static void main(String[] args) {
+	public static void start() {
 
 		//set title
 		JFrame window = new JFrame("Tetris");
