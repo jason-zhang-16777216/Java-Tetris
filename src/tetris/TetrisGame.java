@@ -177,24 +177,24 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    for (int xo = -2; xo <= 2; xo++) {
             for (int yo = -2; yo <= 2; yo++) {
                 if (xo != 0 || yo != 0) {
-                	graphics.drawString("SCORE: " + score, 400 + xo, 75 + yo);//outline
+                	graphics.drawString("SCORE: " + score, 550 + xo, 75 + yo);//outline
                 }
             }
         }
 	    graphics.setColor(Color.BLACK);
-	    graphics.drawString("SCORE: " + score, 400, 75); //draw text
+	    graphics.drawString("SCORE: " + score, 550, 75); //draw text
 	    
 	    // print time
 	    graphics.setColor(Color.WHITE);
 	    for (int xo = -2; xo <= 2; xo++) {
             for (int yo = -2; yo <= 2; yo++) {
                 if (xo != 0 || yo != 0) {
-                	graphics.drawString("TIME: " + time/100, 400 + xo, 175 + yo);//outline
+                	graphics.drawString("TIME: " + time/100, 550 + xo, 175 + yo);//outline
                 }
             }
         }
 	    graphics.setColor(Color.BLACK);
-	    graphics.drawString("TIME: " + time/100, 400, 175); //draw text
+	    graphics.drawString("TIME: " + time/100, 550, 175); //draw text
 	    
 	    // check if little buddy more is on and inform user
 	    if(buddyMode) {
