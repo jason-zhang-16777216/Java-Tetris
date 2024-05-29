@@ -16,7 +16,8 @@ import java.awt.Graphics2D;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.lang.Math;
-
+import java.util.Collections;
+import java.util.List;
 public class TetrisGame extends JPanel implements ActionListener{
 	static public int[][] board = {  //Initializes the board's starting state.
 		{0,0,0,0,0,0,0,0,0,0},//21 index 0
@@ -58,8 +59,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static int oppo_rotationNum = 1;
 	static boolean gameOver = false;
 	static int killScreenLine = 0; //the line in the kill screen (ending animation)
+	static char[] buddyTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L', 'J'}; 
+	static char[] blockTypes = {'I', 'O', 'T', 'S', 'Z', 'L', 'J'}; 
 	static ArrayList<Character> bag = new ArrayList<Character>(); 
-	static int bagRandom = 0;
+	static ArrayList<Character> nextBag = new ArrayList<Character>();
 	static Color Z = new Color(207, 54, 22);
 	static Color S = new Color(138, 234, 40);
 	static Color J = new Color(0, 0, 240);
@@ -104,9 +107,13 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    //update game state
 	    for (int i = 20; i >=0 ; i--) { //Iterates over rows.
 	    	graphics.setColor(Color.LIGHT_GRAY);
-	    	graphics.fillRect(40, 55+h*i, 10*w, 1); //Horizontal grid rows. 
-	    	for (int j = 9; j >= 0; j--) { // Iterates over columns
+	    	graphics.fillRect(40, 55+h*i, 10*w, 1); //Horizontal grid rows
+	    	for (int j = 9; j >= 0; j--) { // Vertical grid columns
+	    		graphics.setColor(Color.LIGHT_GRAY);
 	    		graphics.fillRect(40+w*j, 57+h, 1, 20*h-2);
+	    	}
+	    	for (int j = 9; j >= 0; j--) { // Iterates over columns
+	    		
 	    		if (board[i][j]!=0) {
 	    			switch(Math.abs(board[i][j])) {
 		    		case 1:
@@ -138,15 +145,16 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		 	graphics.setColor(currColor);
 	    		 	graphics.fillRect(40+w*j, 55+h*i, w, h); //locks the block at (i,j)
 	    			graphics.setColor(Color.WHITE);
-	    		 	graphics.fillRect(41+w*j, 56+h*i, w-2, h-2);
+	    		 	graphics.fillRect(42+w*j, 57+h*i, w-3, h-3);
 	    			graphics.setColor(currColor);
-	    			graphics.fillRect(42+w*j, 57+h*i, w-4, h-4);
+	    			graphics.fillRect(43+w*j, 58+h*i, w-5, h-5);
 
 	    		}
 	    		
 		   		if(checkLine(i)) {
 		    		clearLine(i);
 		    	}
+		   		
 	    	}
 	    	
 		}
@@ -154,6 +162,12 @@ public class TetrisGame extends JPanel implements ActionListener{
     	for (int i = 0 ;i < 5;i++) {
     		graphics.setColor(Color.LIGHT_GRAY);
     		graphics.fillRect(350, 30+90*i, 160, 90);
+    		switch('A') {
+			case 'A':
+				graphics.setColor(Color.BLACK);
+				graphics.fillRect(400, 50+90*i, 20, 20);
+    				
+    		}
     	}
 	    
 	    // print score
@@ -265,29 +279,37 @@ public class TetrisGame extends JPanel implements ActionListener{
 		if(gameOver == true) {
 			return;
 		}
-		rotationNum = 1;
+		rotationNum = 1; // Sets the rotation state of the current block to the default state.
 		oppo_rotationNum = 1; 
-		char[] buddyTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L', 'J'}; 
-		char[] blockTypes = {'I', 'O', 'T', 'S', 'Z', 'L', 'J'}; 
-		
-		if(bag.isEmpty() && ! buddyMode) {
-			for (char block : blockTypes) {
-	            bag.add(block);
-	        }
-		} 
-		else if(bag.isEmpty() && buddyMode) {
-			for (char block : buddyTypes) {
-	            bag.add(block);
+		for (char block : bag) {
+			System.out.print(block+", ");
+		}
+		System.out.println();
+		type = bag.get(0);
+		bag.remove(0);
+		try {
+			bag.add(nextBag.get(0));
+			nextBag.remove(0);
+		}
+		catch(Exception e) {
+			if(nextBag.isEmpty() && ! buddyMode) {
+				for (char block : blockTypes) {
+		            nextBag.add(block);
+		        }
+				Collections.shuffle(nextBag);
+			} else {
+				for (char block : buddyTypes) {
+		            nextBag.add(block);
+				}
+				Collections.shuffle(nextBag);
 			}
+			bag.add(nextBag.get(0));
+			nextBag.remove(0);
 		}
 		
-		bagRandom = r.nextInt(0,bag.size());
-		type = bag.get(bagRandom);
-		bag.remove(bagRandom);
 		
-
 		
-		//type = blockTypes[r.nextInt(blockTypes.length)]; //r.nextInt(blockTypes.length)
+		
 		
 		switch(type) { ///////// Magnitude controls color, parity controls locked-ness.
 			case('A'):
@@ -1263,8 +1285,13 @@ public class TetrisGame extends JPanel implements ActionListener{
 	}
 	//main function
 	public static void main(String[] args) {
-
-		//set title
+		for (char block : blockTypes) {
+            bag.add(block);
+            nextBag.add(block);
+            Collections.shuffle(bag);
+            Collections.shuffle(nextBag);
+        }
+		
 		JFrame window = new JFrame("Tetris");
 		
 		// set new GamePlay object to refer to
