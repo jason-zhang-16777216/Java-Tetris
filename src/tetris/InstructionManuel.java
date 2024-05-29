@@ -79,7 +79,6 @@ public class InstructionManuel extends JFrame implements ActionListener{
 
 	}
 
-
 	public void paint(Graphics g){
 		
 		super.paint(g);
