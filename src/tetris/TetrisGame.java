@@ -70,7 +70,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static int killScreenLine = 0; //the line in the kill screen (ending animation)
 	
 	//bag randomizer
+	static char[] buddyTypes = {'A', 'I', 'O', 'T', 'S', 'Z', 'L', 'J'};
+	static char[] blockTypes = {'I', 'O', 'T', 'S', 'Z', 'L', 'J'};
 	static ArrayList<Character> bag = new ArrayList<Character>(); 
+	static ArrayList<Character> nextBag = new ArrayList<Character>(); 
 	static int bagRandom = 0;
 
 	//colors
