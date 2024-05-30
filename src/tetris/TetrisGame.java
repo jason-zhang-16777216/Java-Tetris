@@ -84,7 +84,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static Color O = new Color(241, 239, 47);
 	static Color T = new Color(136, 44, 237);
 	static Color I = new Color(0, 240, 240);
+	static Color A = new Color(0,0,0);
 	static Color currColor = new Color(0,0,0);
+	static Color queueColor = new Color(220,220,220);
 	
 	static boolean hard = false; //hard drop
 	
@@ -176,26 +178,222 @@ public class TetrisGame extends JPanel implements ActionListener{
 		}
 	    //Queue
     	for (int i = 0 ;i < 5;i++) {
-    		graphics.setColor(Color.LIGHT_GRAY);
-    		graphics.fillRect(350, 30+90*i, 160, 90);
     		graphics.setColor(Color.BLACK);
+    		graphics.fillRect(348, 28+90*i, 164, 89);
+    		graphics.setColor(queueColor);
+    		graphics.fillRect(350, 30+90*i, 160, 85);
     		switch(bag.get(i)) {
 			case 'A':
-				graphics.fillRect(400, 50+90*i, 20, 20);
+				graphics.setColor(A);
+				graphics.fillRect(410, 55+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(411, 56+90*i, 28, 28);
+				graphics.setColor(A);
+				graphics.fillRect(412, 57+90*i, 26, 26);
+				break;
 			case 'O':
-				graphics.fillRect(400, 50+90*i, 20, 20);
+				graphics.setColor(O);
+				graphics.fillRect(400, 40+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(401, 41+90*i, 28, 28);
+				graphics.setColor(O);
+				graphics.fillRect(402, 42+90*i, 26, 26);
+				
+				graphics.setColor(O);
+				graphics.fillRect(430, 70+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(431, 71+90*i, 28, 28);
+				graphics.setColor(O);
+				graphics.fillRect(432, 72+90*i, 26, 26);
+				
+				graphics.setColor(O);
+				graphics.fillRect(430, 40+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(431, 41+90*i, 28, 28);
+				graphics.setColor(O);
+				graphics.fillRect(432, 42+90*i, 26, 26);
+				
+				graphics.setColor(O);
+				graphics.fillRect(400, 70+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(401, 71+90*i, 28, 28);
+				graphics.setColor(O);
+				graphics.fillRect(402, 72+90*i, 26, 26);
+				break;
 			case 'I':
-				graphics.fillRect(400, 50+90*i, 20, 20);
+				graphics.setColor(I);
+				graphics.fillRect(370, 55+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(371, 56+90*i, 28, 28);
+				graphics.setColor(I);
+				graphics.fillRect(372, 57+90*i, 26, 26);
+				
+				graphics.setColor(I);
+				graphics.fillRect(400, 55+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(401, 56+90*i, 28, 28);
+				graphics.setColor(I);
+				graphics.fillRect(402, 57+90*i, 26, 26);
+				
+				graphics.setColor(I);
+				graphics.fillRect(430, 55+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(431, 56+90*i, 28, 28);
+				graphics.setColor(I);
+				graphics.fillRect(432, 57+90*i, 26, 26);
+				
+				graphics.setColor(I);
+				graphics.fillRect(460, 55+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(461, 56+90*i, 28, 28);
+				graphics.setColor(I);
+				graphics.fillRect(462, 57+90*i, 26, 26);
+				break;
 			case 'T':
-				graphics.fillRect(400, 50+90*i, 20, 20);
+				graphics.setColor(T);
+				graphics.fillRect(385, 70+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(386, 71+90*i, 28, 28);
+				graphics.setColor(T);
+				graphics.fillRect(387, 72+90*i, 26, 26);
+				
+				graphics.setColor(T);
+				graphics.fillRect(415, 70+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(416, 71+90*i, 28, 28);
+				graphics.setColor(T);
+				graphics.fillRect(417, 72+90*i, 26, 26);
+				
+				graphics.setColor(T);
+				graphics.fillRect(445, 70+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(446, 71+90*i, 28, 28);
+				graphics.setColor(T);
+				graphics.fillRect(447, 72+90*i, 26, 26);
+				
+				graphics.setColor(T);
+				graphics.fillRect(415, 40+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(416, 41+90*i, 28, 28);
+				graphics.setColor(T);
+				graphics.fillRect(417, 42+90*i, 26, 26);
+				break;
 			case 'S':
-				graphics.fillRect(400, 50+90*i, 20, 20);
+				graphics.setColor(S);
+				graphics.fillRect(440, 45+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(441, 46+90*i, 28, 28);
+				graphics.setColor(S);
+				graphics.fillRect(442, 47+90*i, 26, 26);
+				
+				graphics.setColor(S);
+				graphics.fillRect(410, 75+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(411, 76+90*i, 28, 28);
+				graphics.setColor(S);
+				graphics.fillRect(412, 77+90*i, 26, 26);
+				
+				graphics.setColor(S);
+				graphics.fillRect(410, 45+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(411, 46+90*i, 28, 28);
+				graphics.setColor(S);
+				graphics.fillRect(412, 47+90*i, 26, 26);
+				
+				graphics.setColor(S);
+				graphics.fillRect(380, 75+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(381, 76+90*i, 28, 28);
+				graphics.setColor(S);
+				graphics.fillRect(382, 77+90*i, 26, 26);
+				break;
 			case 'Z':
-				graphics.fillRect(400, 50+90*i, 20, 20);
+				graphics.setColor(Z);
+				graphics.fillRect(380, 45+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(381, 46+90*i, 28, 28);
+				graphics.setColor(Z);
+				graphics.fillRect(382, 47+90*i, 26, 26);
+				
+				graphics.setColor(Z);
+				graphics.fillRect(410, 75+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(411, 76+90*i, 28, 28);
+				graphics.setColor(Z);
+				graphics.fillRect(412, 77+90*i, 26, 26);
+				
+				graphics.setColor(Z);
+				graphics.fillRect(410, 45+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(411, 46+90*i, 28, 28);
+				graphics.setColor(Z);
+				graphics.fillRect(412, 47+90*i, 26, 26);
+				
+				graphics.setColor(Z);
+				graphics.fillRect(440, 75+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(441, 76+90*i, 28, 28);
+				graphics.setColor(Z);
+				graphics.fillRect(442, 77+90*i, 26, 26);
+				break;
 			case 'J':
-				graphics.fillRect(400, 50+90*i, 20, 20);
+				graphics.setColor(J);
+				graphics.fillRect(385, 70+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(386, 71+90*i, 28, 28);
+				graphics.setColor(J);
+				graphics.fillRect(387, 72+90*i, 26, 26);
+				
+				graphics.setColor(J);
+				graphics.fillRect(415, 70+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(416, 71+90*i, 28, 28);
+				graphics.setColor(J);
+				graphics.fillRect(417, 72+90*i, 26, 26);
+				
+				graphics.setColor(J);
+				graphics.fillRect(445, 70+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(446, 71+90*i, 28, 28);
+				graphics.setColor(J);
+				graphics.fillRect(447, 72+90*i, 26, 26);
+				
+				graphics.setColor(J);
+				graphics.fillRect(385, 40+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(386, 41+90*i, 28, 28);
+				graphics.setColor(J);
+				graphics.fillRect(387, 42+90*i, 26, 26);
+				break;
 			case 'L':
-				graphics.fillRect(400, 50+90*i, 20, 20);
+				graphics.setColor(L);
+				graphics.fillRect(385, 70+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(386, 71+90*i, 28, 28);
+				graphics.setColor(L);
+				graphics.fillRect(387, 72+90*i, 26, 26);
+				
+				graphics.setColor(L);
+				graphics.fillRect(415, 70+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(416, 71+90*i, 28, 28);
+				graphics.setColor(L);
+				graphics.fillRect(417, 72+90*i, 26, 26);
+				
+				graphics.setColor(L);
+				graphics.fillRect(445, 70+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(446, 71+90*i, 28, 28);
+				graphics.setColor(L);
+				graphics.fillRect(447, 72+90*i, 26, 26);
+				
+				graphics.setColor(L);
+				graphics.fillRect(445, 40+90*i, 30, 30);
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(446, 41+90*i, 28, 28);
+				graphics.setColor(L);
+				graphics.fillRect(447, 42+90*i, 26, 26);
+				break;
     				
     		}
     		
@@ -365,10 +563,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 				break;
 				
 			case('T'):
-				board[0][5] = -4; // □□□□□■□□□□
-				board[1][4] = -4; // □□□□■■■□□□
+				board[0][4] = -4; // □□□□■□□□□□
+				board[1][3] = -4; // □□□■■■□□□□
+				board[1][4] = -4;
 				board[1][5] = -4;
-				board[1][6] = -4;
 				
 				break;
 				
@@ -1339,7 +1537,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		game.setBackground(bg);
 		
 		//window settings
-		window.setBounds(200, 100, 900, 720); //size
+		window.setBounds(200, 5, 900, 720); //size
 		window.setResizable(false); //no resize
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //close
 		window.setVisible(true); //visibility
