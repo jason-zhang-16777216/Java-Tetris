@@ -178,12 +178,27 @@ public class TetrisGame extends JPanel implements ActionListener{
     	for (int i = 0 ;i < 5;i++) {
     		graphics.setColor(Color.LIGHT_GRAY);
     		graphics.fillRect(350, 30+90*i, 160, 90);
-    		switch('A') {
+    		graphics.setColor(Color.BLACK);
+    		switch(bag.get(i)) {
 			case 'A':
-				graphics.setColor(Color.BLACK);
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'O':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'I':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'T':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'S':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'Z':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'J':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'L':
 				graphics.fillRect(400, 50+90*i, 20, 20);
     				
     		}
+    		
     	}
 	    
 	    // print score
@@ -211,7 +226,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    graphics.setColor(Color.BLACK);
 	    graphics.drawString("TIME: " + time/100, 550, 175); //draw text
 	    
-	    // check if little buddy more is on and inform user
+	    // check if little buddy mode is on and inform user
 	    if(buddyMode) {
 	    	// print buddy statement
 	    	graphics.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -302,6 +317,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			System.out.print(block+", ");
 		}
 		System.out.println();
+		
 		type = bag.get(0);
 		bag.remove(0);
 		try {
@@ -309,7 +325,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 			nextBag.remove(0);
 		}
 		catch(Exception e) {
-			if(nextBag.isEmpty() && ! buddyMode) {
+			if(!buddyMode) {
 				for (char block : blockTypes) {
 		            nextBag.add(block);
 		        }
