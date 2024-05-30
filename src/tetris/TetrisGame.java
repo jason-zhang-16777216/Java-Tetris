@@ -259,7 +259,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    	}
 	    }
 	}
-
+	
+	
 	public boolean checkLine(int index) { // Checks for filled lines
 		if(gameOver == true) {
 			return(false);
