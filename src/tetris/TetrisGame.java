@@ -178,12 +178,27 @@ public class TetrisGame extends JPanel implements ActionListener{
     	for (int i = 0 ;i < 5;i++) {
     		graphics.setColor(Color.LIGHT_GRAY);
     		graphics.fillRect(350, 30+90*i, 160, 90);
+    		graphics.setColor(Color.BLACK);
     		switch(bag.get(i)) {
 			case 'A':
-				graphics.setColor(Color.BLACK);
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'O':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'I':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'T':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'S':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'Z':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'J':
+				graphics.fillRect(400, 50+90*i, 20, 20);
+			case 'L':
 				graphics.fillRect(400, 50+90*i, 20, 20);
     				
     		}
+    		
     	}
 	    
 	    // print score
