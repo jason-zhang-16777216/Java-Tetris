@@ -102,8 +102,8 @@ public class InstructionManuel extends JFrame implements ActionListener{
 	    g.drawString("Press W or Z to rotate counterclockwise", 400, 255); 
 	    g.drawString("Press A or < to move left", 400, 280); 
 	    g.drawString("Press D or > to move right", 400, 305);
-	    g.drawString("Press S or V to soft drop (block can still be moved after droping)", 400, 330);
-	    g.drawString("Press SPACE or ^ to hard drop (block can't be moved after droping)", 400, 355);
+	    g.drawString("Press S or V to soft drop (block can still be moved after dropping)", 400, 330);
+	    g.drawString("Press SPACE or ^ to hard drop (block can't be moved after dropping)", 400, 355);
 
 	}
 	
@@ -111,7 +111,7 @@ public class InstructionManuel extends JFrame implements ActionListener{
 
 		if (event.getSource() == startgame) {
 			this.dispose();
-            game.start(); // Start the tutorial screen
+            game.start(); // Start game!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :>
         }
 	}
 	
