@@ -62,7 +62,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	//rotation settings
 	static int[] x_values = {100}; //all x values of block
 	static int[] y_values = {100}; //all y values of block
-	static int rotationNum = 1; 
+	static int rotationNum = 1;
 	static int oppo_rotationNum = 1;
 	
 	// gameover handlings (i.e. animations)
@@ -122,6 +122,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	 	graphics.fillRect(40, 85, 10*w, 20*h-2); 
 	 	graphics.setColor(currColor);
 	 	graphics.fillRect(40, 55, 280, 28);
+	 	
 	    //update game state
 	    for (int i = 20; i >=0 ; i--) { //Iterates over rows.
 	    	graphics.setColor(Color.LIGHT_GRAY);
@@ -129,11 +130,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    	for (int j = 9; j >= 0; j--) { // Vertical grid columns
 	    		graphics.setColor(Color.LIGHT_GRAY);
 	    		graphics.fillRect(40+w*j, 57+h, 1, 20*h-2);
-	    	}
-	    	for (int j = 9; j >= 0; j--) { // Iterates over columns
 	    		
 	    		if (board[i][j]!=0) {
 	    			switch(Math.abs(board[i][j])) {
+	    			//normal blocks
 		    		case 1:
 		    			currColor = Color.BLACK;
 		    			break;
@@ -157,6 +157,32 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    			break;
 		    		case 8:
 		    			currColor = J;
+		    			break;
+		    			
+		    		// ghost blocks
+		    		case 11:
+		    			currColor = Color.GRAY;
+		    			break;
+		    		case 12:
+		    			currColor = I.brighter();
+		    			break;
+		    		case 13:
+		    			currColor = O.brighter();
+		    			break;
+		    		case 14:
+		    			currColor = T.brighter();
+		    			break;
+		    		case 15:
+		    			currColor = S.brighter();
+		    			break;
+		    		case 16:
+		    			currColor = Z.brighter();
+		    			break;
+		    		case 17:
+		    			currColor = L.brighter();
+		    			break;
+		    		case 18:
+		    			currColor = J.brighter();
 		    			break;
 		    		}
 	    			
@@ -457,7 +483,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    //prints game over animation
 	    if(gameOver == true) {
 	    	time--;
-		    
 	    	if(fallTime % 10 == 0) {
 	    		for(var i = 0; i < 10; i++) {
 	    			if(fallTime % 10 == 0) {
@@ -498,9 +523,8 @@ public class TetrisGame extends JPanel implements ActionListener{
 		}
 	}
 	public static void endGame(){ //Game-end condition
-		
 		for (int i = 0; i <= 9; i++) {
-			if (board[0][i] != 0 ) { //Ends game if a piece is placed above the board.
+			if (board[0][i] != 0) { //Ends game if a piece is placed above the board.
 				gameOver = true;
 			}
 		}
@@ -509,12 +533,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 		if(gameOver == true) {
 			return;
 		}
+		
 		rotationNum = 1; // Sets the rotation state of the current block to the default state.
 		oppo_rotationNum = 1; 
-		for (char block : bag) {
-			System.out.print(block+", ");
-		}
-		System.out.println();
 		
 		type = bag.get(0);
 		bag.remove(0);
@@ -539,12 +560,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 		}
 		
 		
-		
-		
-		
-		switch(type) { ///////// Magnitude controls color, parity controls locked-ness.
+		switch(type) { ///////// value of number controls color, sign (pos or neg) controls locked-ness.
 			case('A'):
 				board[0][5] = -1; // □□□□□■□□□□ 
+				board[0+down()][5] = -11; // □□□□□■□□□□ 
 				break;
 			case('I'):
 				board[0][3] = -2; // □□□■■■■□□□
@@ -552,6 +571,10 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[0][5] = -2;
 				board[0][6] = -2;
 				
+				board[0+down()][3] = -12; // □□□■■■■□□□
+				board[0+down()][4] = -12; // □□□□□□□□□□
+				board[0+down()][5] = -12;
+				board[0+down()][6] = -12;
 				break;
 			
 			case('O'):
@@ -559,6 +582,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[0][4] = -3; // □□□□■■□□□□
 				board[0][5] = -3;
 				board[1][5] = -3;
+				
+				board[1+down()][4] = -13; // □□□□■■□□□□
+				board[0+down()][4] = -13; // □□□□■■□□□□
+				board[0+down()][5] = -13;
+				board[1+down()][5] = -13;
 				
 				break;
 				
@@ -568,6 +596,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[1][4] = -4;
 				board[1][5] = -4;
 				
+				board[0+down()][4] = -14; // □□□□□■□□□□
+				board[1+down()][3] = -14; // □□□□■■■□□□
+				board[1+down()][4] = -14;
+				board[1+down()][5] = -14;
+				
 				break;
 				
 			case('S'):
@@ -575,6 +608,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[0][4] = -5; // □□□■■□□□□□
 				board[1][4] = -5;
 				board[1][3] = -5;
+				
+				board[0+down()][5] = -15; // □□□□■■□□□□
+				board[0+down()][4] = -15; // □□□■■□□□□□
+				board[1+down()][4] = -15;
+				board[1+down()][3] = -15;
 				
 				break;
 			
@@ -584,6 +622,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[0][4] = -6;
 				board[0][3] = -6;
 				
+				board[1+down()][5] = -16; // □□□■■□□□□□
+				board[1+down()][4] = -16; // □□□□■■□□□□
+				board[0+down()][4] = -16;
+				board[0+down()][3] = -16;
+				
 				break;
 				
 			case('L'):
@@ -592,6 +635,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[1][4] = -7;
 				board[1][5] = -7;
 				
+				board[0+down()][5] = -17; // □□□□□■□□□□
+				board[1+down()][3] = -17; // □□□■■■□□□□
+				board[1+down()][4] = -17;
+				board[1+down()][5] = -17;
+				
 				break;
 				
 			case('J'):
@@ -599,6 +647,11 @@ public class TetrisGame extends JPanel implements ActionListener{
 				board[1][3] = -8; // □□□■■■□□□□
 				board[1][4] = -8;
 				board[1][5] = -8;
+				
+				board[0+down()][3] = -18; // □□□■□□□□□□
+				board[1+down()][3] = -18; // □□□■■■□□□□
+				board[1+down()][4] = -18;
+				board[1+down()][5] = -18;
 		}
 	}
 	public static void checkReachBottom() { //check if block reached the bottom and lock piece
@@ -606,7 +659,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		for (int i = 0; i < 20; i++) { //Iterates over rows (top to bottom)
 			for (int j = 9; j >= 0; j--) { // Iterates over columns (right to left)
 				
-				if ((board[i][j] < 0  && board[i + 1][j] > 0) || (board[20][j] < 0  && i == 0)) { //if block is stacking on a locked block or at the bottom
+				if ((board[i][j] < 0 && board[i][j] > -10 && board[i + 1][j] > 0) || (board[20][j] < 0 && board[20][j] > -10 && i == 0)) { //if block is stacking on a locked block or at the bottom
 			    	
 					if (blockChecked == false) { //make sure soft drop lock fallTime is consistent
 						lockTime++;
@@ -641,18 +694,19 @@ public class TetrisGame extends JPanel implements ActionListener{
 		}
 		return false;
 	}
-	public static void down() {
+	public static int down() {
 		int d = 0; //distance to move block down by
 		int all_d[] = {100};
 		for (int i = 20; i >= 0; i--) { //Iterates over rows (bottom to top)
 			for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
 					
-				if (board[i][j] < 0 ) { //find the distance from movable block to nearest locked in block below
+				if (board[i][j] < 0 && board[i][j] > -10) { //find the distance from movable block to nearest locked in block below
 					for (int ii = i+1; ii < 21 && board[ii][j] <= 0 && board[i+1][j] <= 0; ii++) { 
 						d++;
 					}
 					// add distance to list 
 					int[] newArray = Arrays.copyOf(all_d, all_d.length + 1);
+					System.out.println(d);
 					newArray[newArray.length - 1] = d;
 				    all_d = newArray;
 				    d = 0;
@@ -667,18 +721,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		        min = all_d[i];
 		    }
 		}
-		// move all movable blocks down by min
-		for (int i = 20; i >= 0; i--) { 
-			for (int j = 9; j >= 0; j--) {
-				if (board[i][j] < 0 ) {
-					board[i+min][j] = board[i][j];
-					if (min != 0) {
-						board[i][j] = 0;
-					}
-					fallTime = 1;
-				}
-			}
-		}
+		return min;
 	}
 	public void actionPerformed(ActionEvent e) {
 		fallTime ++;
@@ -693,7 +736,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    	for (int j = 9; j >= 0; j--) { // Iterates over columns (right to left)
 		    		checkReachBottom();
 		    		
-		    		if (board[i][j] < 0 ) {
+		    		if (board[i][j] < 0 && board[i][j] > -10 ) {
 				    	try {
 				    		board[i+1][j] = board[i][j];
 			    			board[i][j] = 0;
@@ -731,7 +774,7 @@ public class TetrisGame extends JPanel implements ActionListener{
     			for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
     				for (int j = 0; j <= 9; j++) { //Iterates over columns (right to left)
     					
-    					if (board[i][j] < 0 ) { // check if it's moving shape
+    					if (board[i][j] < 0 && board[i][j] > -10) { // check if it's moving shape
     						
     						// for 1 by 1
     						if (checkComplexShape(j, i)) {
@@ -761,12 +804,30 @@ public class TetrisGame extends JPanel implements ActionListener{
     				for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
 	    				for (int j = 0; j <= 9; j++) { //Iterates over columns (left to right)
 
-	    					if (board[i][j] < 0 ) {
+	    					if (board[i][j] < 0 && board[i][j] > -10) {
 	    						
 								board[i][j-1] = board[i][j];
 								board[i][j] = 0;
 	    					}
 	    				}
+    				}
+    			}
+    			
+    			// move ghost blocks
+    			for (int i = 20; i >= 0; i--) { 
+    				for (int j = 9; j >= 0; j--) {
+    					if (board[i][j] < -10) {
+    						board[i][j] = 0;
+    					}
+    				}
+    			}
+    			for (int i = 20; i >= 0; i--) { 
+    				for (int j = 9; j >= 0; j--) {
+    					if (board[i][j] < 0 && board[i][j] > -10) {
+    						if (board[i+down()][j] == 0) {
+    							board[i+down()][j] = board[i][j] - 10;
+    						}
+    					}
     				}
     			}
     		}
@@ -777,7 +838,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
 	    			for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
 
-	    				if (board[i][j] < 0 ) { // check if it's moving shape
+	    				if (board[i][j] < 0 && board[i][j] > -10) { // check if it's moving shape
 	    						
 	    					// for 1 by 1
 	    					if (checkComplexShape(j, i)) {
@@ -805,7 +866,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		if (testRr == 0) {
 	    			for (int i = 0; i <= 20; i++) { //Iterates over rows (top to bottom)
 		    			for (int j = 9; j >= 0; j--) { //Iterates over columns (right to left)
-		    				if (board[i][j] < 0 ) {
+		    				if (board[i][j] < 0 && board[i][j] > -10) {
 		    					
     							board[i][j+1] = board[i][j];
     							board[i][j] = 0;
@@ -813,16 +874,61 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    			}
 	    			}
 	    		}
+	    		// move ghost blocks
+    			for (int i = 20; i >= 0; i--) { 
+    				for (int j = 9; j >= 0; j--) {
+    					if (board[i][j] < -10) {
+    						board[i][j] = 0;
+    					}
+    				}
+    			}
+    			for (int i = 20; i >= 0; i--) { 
+    				for (int j = 9; j >= 0; j--) {
+    					if (board[i][j] < 0 && board[i][j] > -10) {
+    						if (board[i+down()][j] == 0) {
+    							board[i+down()][j] = board[i][j] - 10;
+    						}
+    					}
+    				}
+    			}
     		}
 	    		
-	    	
+	    	//hard drops
     		else if ((event.getKeyCode() == KeyEvent.VK_UP) || (event.getKeyCode() == KeyEvent.VK_SPACE)){
-    			down();
+    			
+    			int min = down();
+    			
+    			// move all movable blocks down by min
+    			for (int i = 20; i >= 0; i--) { 
+    				for (int j = 9; j >= 0; j--) {
+    					if (board[i][j] < 0 && board[i][j] > -10) {
+    						board[i+min][j] = board[i][j];
+    						if (min != 0) {
+    							board[i][j] = 0;
+    						}
+    						fallTime = 1;
+    					}
+    				}
+    			}
     			hard = true;
     		}
+    		//soft drops
     		else if ((event.getKeyCode() == KeyEvent.VK_S)||(event.getKeyCode() == KeyEvent.VK_DOWN)) {
-    			down();
-	    		
+    			int min = down();
+    			
+    			// move all movable blocks down by min
+    			for (int i = 20; i >= 0; i--) {
+    				for (int j = 9; j >= 0; j--) {
+    					if (board[i][j] < 0 && board[i][j] > -10) {
+    						board[i+min][j] = board[i][j];
+    						//System.out.println(down());
+    						if (min != 0) {
+    							board[i][j] = 0;
+    						}
+    						fallTime = 1;
+    					}
+    				}
+    			}
 	    	}
 	    			
     		// rotation counterclockwise (helllllllllp)
@@ -833,7 +939,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		for (int i = 20; i >= 0; i--) { 
 	    			for (int j = 9; j >= 0; j--) {
 	    					
-	    				if (board[i][j] < 0) { //find the distance from movable block to nearest locked in block below
+	    				if (board[i][j] < 0 && board[i][j] > -10) { //find the distance from movable block to nearest locked in block below
 	    						
 	    					// make list of all coodinates of block
 	    					for (int ii = 1; ii < x_values.length; ii++) {
@@ -1164,6 +1270,24 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		int[] newArray = {100};
 				x_values = newArray;
 				y_values = newArray;
+				
+				// move ghost blocks
+    			for (int i = 20; i >= 0; i--) { 
+    				for (int j = 9; j >= 0; j--) {
+    					if (board[i][j] < -10) {
+    						board[i][j] = 0;
+    					}
+    				}
+    			}
+    			for (int i = 20; i >= 0; i--) { 
+    				for (int j = 9; j >= 0; j--) {
+    					if (board[i][j] < 0 && board[i][j] > -10) {
+    						if (board[i+down()][j] == 0) {
+    							board[i+down()][j] = board[i][j] - 10;
+    						}
+    					}
+    				}
+    			}
 	    	}
 	    	
 	    	// rotation clockwise (helllllllllp)
@@ -1173,7 +1297,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		for (int i = 20; i >= 0; i--) { 
 	    			for (int j = 9; j >= 0; j--) {
 	    					
-	    				if (board[i][j] < 0) { //find the distance from movable block to nearest locked in block below
+	    				if (board[i][j] < 0 && board[i][j] > -10) { //find the distance from movable block to nearest locked in block below
 	    						
 	    					// make list of all coodinates of block
 	    					for (int ii = 1; ii < x_values.length; ii++) {
@@ -1502,6 +1626,24 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    		int[] newArray = {100};
 				x_values = newArray;
 				y_values = newArray;
+				
+				// move ghost blocks
+    			for (int i = 20; i >= 0; i--) { 
+    				for (int j = 9; j >= 0; j--) {
+    					if (board[i][j] < -10) {
+    						board[i][j] = 0;
+    					}
+    				}
+    			}
+    			for (int i = 20; i >= 0; i--) { 
+    				for (int j = 9; j >= 0; j--) {
+    					if (board[i][j] < 0 && board[i][j] > -10) {
+    						if (board[i+down()][j] == 0) {
+    							board[i+down()][j] = board[i][j] - 10;
+    						}
+    					}
+    				}
+    			}
 	    	}
 	    }
 
