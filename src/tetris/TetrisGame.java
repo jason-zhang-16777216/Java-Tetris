@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.lang.Math;
 import java.util.Collections;
 import java.util.List;
+
 public class TetrisGame extends JPanel implements ActionListener{
 	static public int[][] board = {  //Initializes the board's starting state.
 		{0,0,0,0,0,0,0,0,0,0},//21 index 0
@@ -670,6 +671,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 					}
 					System.out.println(lockTime);
 					if ((lockTime % 50 == 0)||(hard)) {
+						lockTime = 1;
 			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
 			    			for (int jj = 9; jj >= 0; jj--) { // Iterates over columns (right to left)
 			    				if (board[ii][jj] < 0 && board[ii][jj] > -10) {
@@ -748,7 +750,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		fallTime ++;
 		time++;	
 		checkReachBottom();
-		System.out.println(fallTime + " " + lockTime + " " + hard);
+		//System.out.println(fallTime + " " + lockTime + " " + hard);
 		
 		//block moves down slowly
 		if (fallTime % 50 == 0) {
