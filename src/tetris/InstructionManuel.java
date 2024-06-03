@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 public class InstructionManuel extends JFrame implements ActionListener{
 	
 	private TetrisGame game;
+	private Instruction ins;
 	static Random r = new Random();
 	
 	// create buttons for different use
@@ -98,7 +99,7 @@ public class InstructionManuel extends JFrame implements ActionListener{
         // print instruction
 	    g.setColor(Color.BLACK);
 	    g.setFont(new Font("Arial", Font.PLAIN, 15));
-	    g.drawString("Press E to X to rotate clockwise", 400, 230); 
+	    g.drawString("Press E or X to rotate clockwise", 400, 230); 
 	    g.drawString("Press W or Z to rotate counterclockwise", 400, 255); 
 	    g.drawString("Press A or < to move left", 400, 280); 
 	    g.drawString("Press D or > to move right", 400, 305);
@@ -111,7 +112,9 @@ public class InstructionManuel extends JFrame implements ActionListener{
 
 		if (event.getSource() == startgame) {
 			this.dispose();
+			ins.start();
             game.start(); // Start game!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :>
+            
         }
 	}
 	
