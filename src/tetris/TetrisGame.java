@@ -482,7 +482,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 	    
 	    //prints game over animation
 	    if(gameOver == true) {
-	    	//System.out.println('t');
 	    	time--;
 	    	if(fallTime % 10 == 0) {
 	    		for(var i = 0; i < 10; i++) {
@@ -747,7 +746,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 		fallTime ++;
 		time++;	
 		checkReachBottom();
-		System.out.println(fallTime + " " + lockTime + " " + hard);
 		
 		//block moves down slowly
 		if (fallTime % 50 == 0) {
@@ -1639,7 +1637,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 		game.setBackground(bg);
 		
 		//window settings
-		window.setBounds(200, 5, 900, 720); //size
+		window.setBounds(50, 50, 900, 720); //size
 		window.setResizable(false); //no resize
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //close
 		window.setVisible(true); //visibility
