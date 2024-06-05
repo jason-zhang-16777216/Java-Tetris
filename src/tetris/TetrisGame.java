@@ -58,6 +58,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	static int score = 0; // Score == Lines cleared × 10.
 	static char type; //Type of block. (A, I, O, T, S, Z, L, J).
 	static boolean blockChecked = false; //make sure soft drop lock fallTime is consistent
+	int lines = 0; //number of lines cleared
 	
 	static KeyHandling kHandle = new KeyHandling();//Key-press detection. 
 	
@@ -163,28 +164,28 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    			
 		    		// ghost blocks
 		    		case 11:
-		    			currColor = Color.GRAY;
+		    			currColor = Color.GRAY; // Little Buddy
 		    			break;
 		    		case 12:
-		    			currColor = new Color(0, 240, 240, 100);
+		    			currColor = new Color(0, 240, 240, 100); //I
 		    			break;
 		    		case 13:
-		    			currColor = new Color(241, 239, 47, 100);
+		    			currColor = new Color(241, 239, 47, 100); //O
 		    			break;
 		    		case 14:
-		    			currColor = new Color(136, 44, 237, 100);
+		    			currColor = new Color(136, 44, 237, 100); //T
 		    			break;
 		    		case 15:
-		    			currColor = new Color(138, 234, 40, 100);
+		    			currColor = new Color(138, 234, 40, 100); //S
 		    			break;
 		    		case 16:
-		    			currColor = new Color(207, 54, 22, 100);
+		    			currColor = new Color(207, 54, 22, 100); //Z
 		    			break;
 		    		case 17:
-		    			currColor = new Color(221, 164, 34, 100);
+		    			currColor = new Color(221, 164, 34, 100); //L
 		    			break;
 		    		case 18:
-		    			currColor = new Color(0, 0, 240, 100);
+		    			currColor = new Color(0, 0, 240, 100); //J
 		    			break;
 		    		}
 	    			
@@ -513,15 +514,22 @@ public class TetrisGame extends JPanel implements ActionListener{
  		return true;
 	}
 	public void clearLine(int index) { // Handles line clearing
+		lines ++;
 		for (var i = index; i > 0; i--) { // Moves each line above down by 1
 			for (var j = 0; j < 10; j++) {
 				board[i][j] = board[i-1][j];
 			}
 		}
 		
-		for (var i = 0;i<10;i++) { // Clears the top line
+		for (var i = 0;i < 10;i++) { // Clears the top line
 			board[0][i] = 0;
-			score++;
+		}
+		if (lines >= 4) {
+			score += 50;
+			lines = 0;
+		}
+		else {
+			score += 10;
 		}
 	}
 	public static void endGame(){ //Game-end condition
