@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.awt.Color;
+import java.awt.AlphaComposite;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -165,25 +166,25 @@ public class TetrisGame extends JPanel implements ActionListener{
 		    			currColor = Color.GRAY;
 		    			break;
 		    		case 12:
-		    			currColor = (I.darker()).darker();
+		    			currColor = new Color(0, 240, 240, 100);
 		    			break;
 		    		case 13:
-		    			currColor = (O.darker()).darker();
+		    			currColor = new Color(241, 239, 47, 100);
 		    			break;
 		    		case 14:
-		    			currColor = (T.darker()).darker();
+		    			currColor = new Color(136, 44, 237, 100);
 		    			break;
 		    		case 15:
-		    			currColor = (S.darker()).darker();
+		    			currColor = new Color(138, 234, 40, 100);
 		    			break;
 		    		case 16:
-		    			currColor = (Z.darker()).darker();
+		    			currColor = new Color(207, 54, 22, 100);
 		    			break;
 		    		case 17:
-		    			currColor = (L.darker()).darker();
+		    			currColor = new Color(221, 164, 34, 100);
 		    			break;
 		    		case 18:
-		    			currColor = (J.darker()).darker();
+		    			currColor = new Color(0, 0, 240, 100);
 		    			break;
 		    		}
 	    			
