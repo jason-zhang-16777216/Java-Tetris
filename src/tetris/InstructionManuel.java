@@ -19,7 +19,6 @@ public class InstructionManuel extends JFrame implements ActionListener{
 	
 	// create buttons for different use
 	JButton startgame = new JButton("START GAME");
-	
 	// draw key buttons
 	JButton a = new JButton("A");
 	JButton s = new JButton("S");
