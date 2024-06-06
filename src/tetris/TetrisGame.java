@@ -100,8 +100,12 @@ public class TetrisGame extends JPanel implements ActionListener{
 	*/
 	static boolean buddyMode = false; // later on add JButton for user to control whether little buddy appears of not
 	
+	private AudioPlayer audio = new AudioPlayer();
+	
 	//constructor
 	public TetrisGame(){
+		
+		
 		time = 0;
 		fallTime = 1;
 		lockTime = 1;
@@ -1629,6 +1633,7 @@ public class TetrisGame extends JPanel implements ActionListener{
 	}
 
 	public static void start() {
+		
 		for (char block : blockTypes) {
             bag.add(block);
             nextBag.add(block);
@@ -1658,6 +1663,9 @@ public class TetrisGame extends JPanel implements ActionListener{
 		
 		//add key listener for key presses
 		window.addKeyListener(kHandle);
+		
+		//added song
+		game.audio.addSong();
 
 	}
 }
