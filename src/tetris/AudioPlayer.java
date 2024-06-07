@@ -9,7 +9,7 @@ public class AudioPlayer {
 
 	public static void addSong() {
 		try {
-			File bgmusic = new File("src/tetris/audio/game-music-loop-3-144252.wav");
+			File bgmusic = new File("src/tetris/audio/tetris.wav");
 			if (bgmusic == null) {
 				throw new IOException("Sound File not Found");
 			}
