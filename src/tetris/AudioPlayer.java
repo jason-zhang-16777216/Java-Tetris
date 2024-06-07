@@ -18,8 +18,10 @@ public class AudioPlayer {
             song = AudioSystem.getClip();
             song.open(input);
             song.start();
+            
             // loop the audio
             song.loop(Clip.LOOP_CONTINUOUSLY);
+            
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }

@@ -681,7 +681,6 @@ public class TetrisGame extends JPanel implements ActionListener{
 						lockTime++;
 						blockChecked = true;
 					}
-					System.out.println(lockTime);
 					if ((lockTime % 50 == 0)||(hard)) {
 						lockTime = 1;
 			    		for (int ii = 0; ii <= 20; ii++) { //Iterates over rows (top to bottom)
